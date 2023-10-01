@@ -1,3 +1,39 @@
-body {
-    background: rgb(131, 131, 255);
+body, * {
+    
+    box-sizing: border-box;
+    margin: 0;
 }
+
+
+
+
+main {
+    padding-top: calc( 100vh * .25);
+    border: 2px solid ;
+
+}
+
+.container {
+    width: 800px;
+    margin: auto;
+}
+
+/* .words {
+    display: flex;
+    
+}
+
+.words > div {
+    margin: .5rem;
+    padding: .5rem;
+
+}
+
+*/
+#text {
+    font-family: "Lato", sans-serif;
+    width: 880px;
+    font-size: 25px;
+    padding: 2rem;
+    border: 2px solid blue;
+} 
