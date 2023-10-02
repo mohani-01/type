@@ -4,6 +4,10 @@ body, * {
     margin: 0;
 }
 
+main{
+
+    background: rgb(145, 145, 145);
+}
 
 
 
@@ -14,26 +18,72 @@ main {
 }
 
 .container {
-    width: 800px;
-    margin: auto;
-}
-
-/* .words {
     display: flex;
-    
+    flex-direction: column;
+    text-align: center;
+    width: auto;
+    margin: auto;
+    max-width: 900px;
 }
 
-.words > div {
-    margin: .5rem;
-    padding: .5rem;
 
+#timer {
+    padding-bottom: 2rem;
+    font-size: 20px;
 }
 
-*/
+
 #text {
+    display: flex;
+    flex-wrap: wrap;
     font-family: "Lato", sans-serif;
-    width: 880px;
     font-size: 25px;
-    padding: 2rem;
+    padding: 1rem;
     border: 2px solid blue;
+    text-align: justify;
+    position: relative;
+    color: rgb(223, 223, 223);
+    overflow: wrap; 
+  
+    
+} 
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+
+
+#cursor {
+    animation-name: blink;
+    animation-iteration-count: infinite;
+    animation-duration: .7s;
+    color   : rgb(0, 0, 0);
+    font-size: 25px;
+    position: absolute;
+    z-index: 343;
+
+}
+
+span {
+
+}
+
+
+.correct {
+    color: green;
+    border-bottom-color: green;
+}
+
+.incorrect {
+    color: red;
+    border-color: red;
+}
+
+
+.letter {
+  padding-right: 5px;  
+
 } 
