@@ -91,8 +91,6 @@ function startTyping() {
                         let nextLetter = newLetter.nextSibling;
                         newLetter.remove()
                         newLetter = nextLetter
-
-
                     }
                     removeClassAll(newLetter)
                     addClass(newLetter, "current")
@@ -101,12 +99,21 @@ function startTyping() {
                 } else {
                     // check if there is previous Word an it contain an inccorect element
                     
-                    if (parentWord.previousSibling && parentWord.previousSibling.querySelector('.incorrect'))   {
+                    if (parentWord.previousSibling && parentWord.previousSibling.querySelector('.previous-current')) {
+                        
+                        removeClass(parentWord, 'current')
+                        removeClassAll(newLetter)
+                        parentWord = parentWord.previousSibling
+                        newLetter = parentWord.querySelector('.previous-current')
+                        removeClassAll(newLetter)
+                        addClass(newLetter, 'current')
+
+                    } else if (parentWord.previousSibling && parentWord.previousSibling.querySelector('.incorrect'))   {
                         removeClass(parentWord, 'current')
                         removeClassAll(newLetter)
                         parentWord = parentWord.previousSibling
                         newLetter = parentWord.lastChild
-                    }
+                    }  
                 
                     console.log("Check if the previous word exist and there is at least one error in it ")
                 }
@@ -117,10 +124,28 @@ function startTyping() {
 
 
             // if wrong text is typed 
+            
             } else if (char !== newLetter.innerText ) {
-                console.log(char, newLetter.innerHTML )
+
                 // check if there is a nextSibling
-                if (newLetter.nextSibling) {
+                if (char === ' ') {
+                    if (!parentWord.nextSibling) {
+                        textDisplay.innerHTML = "Done";
+                    } else if (newLetter === parentWord.firstChild) {
+                        
+                        return 
+                    } else { 
+                            removeClass(parentWord, "current")
+                            removeClassAll(newLetter)
+                            addClass(newLetter, "previous-current")
+                            parentWord = parentWord.nextSibling;
+                            newLetter = parentWord.firstChild;
+                            addClass(parentWord, "current");    
+                            addClass(newLetter, "current");
+                        
+
+                    }
+                } else if (newLetter.nextSibling) {
                     removeClass(newLetter, 'current')
                     addClass(newLetter, 'incorrect')
                     newLetter = newLetter.nextSibling
@@ -134,20 +159,11 @@ function startTyping() {
                     
 
                 }
-               
-                
-                
-            // if their is an error  anc className is space
-                // if they click Space make them pass to then next node
-
-                // else add extra elements (nothing for now)
-
-             
-
-               
-            } 
+            // if the user want to pass next text if there is an error in the current word
+           
             
-    }
+            }
+        }
     
     // if (newLetter.innerHTML =)
 

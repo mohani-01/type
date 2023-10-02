@@ -67,8 +67,8 @@ main {
 
 }
 
-span {
-
+.incorrect .letter {
+    border-bottom: 2px solid blue;
 }
 
 
