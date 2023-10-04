@@ -57,7 +57,6 @@ body > * {
 
 main {
     
-    padding-top: calc( 100vh * .25);
     background: #464337;
     height: 100%;
 }
@@ -65,14 +64,17 @@ main {
 
 #timer {
     height: 35px;
+    text-align: justify;
 }
 
 
-.game-container {
+.game-container, #result {
+    padding-top: calc( 100vh * .20);
     
     width: auto;
     margin: auto;
     max-width: 900px;
+    min-width: 300px;
     /* border: 2px solid black; */
     text-align: center;
     /* position: relative; */
@@ -109,21 +111,25 @@ main {
     outline: none;   
     transition: filter 2s ease;
     z-index: 2;
+    user-select: none;
     /* position: relative; */
 } 
 
 
 .focus {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
+    display: block;
+    width: 100%;
+    margin: auto;
     text-align: center;
-    font-size: .8rem;
+    font-size: .7rem;
     top: 40px;
-    font-weight: 600;
+    font-weight: 350;
+    position: absolute;
     color: white;
-    z-index: 2;
+    z-index: 999;
+    pointer-events: none;
+    user-select: none;
+    /* border: 2px s++olid white; */
 }
 
 
@@ -131,6 +137,7 @@ main {
     transition: filter 5ms ease;
     filter: blur(0px);
 }
+#text:fou
 
 
 #text:focus ~ span.focus {
@@ -156,7 +163,7 @@ main {
     font-size: 1rem;
     padding-bottom: 2rem;
     position: absolute;
-
+    /* user-select: none; */
     /* z-index: 343; */
 
 }
@@ -187,4 +194,8 @@ main {
 
 button.current-time {
     color: yellow !important;
+}
+
+.error {
+    color: red;
 }

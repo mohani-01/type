@@ -1,55 +1,33 @@
-{% load static %}
+{% extends 'writing/layout.html'%}
 
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
-    
-    <link href="{% static 'writing/styles.css' %}" rel="stylesheet">
-    <script src="{% static 'writing/script.js' %}" type="application/javascript" defer></script>
-    <title>We Type</title>
-</head>
-<body>
-   
-<header>
-    <div id="header">
-        <div id="logo">39438493 Logo</div>
-        <div id="user">& User</div>
-    </div>
-    <div id="options">
+{% block body %}
+    <main>
+        <div id="options">
 
                 
-        <div id="choose-option">
-            <div id="choose-time">Select Time</div>
-            <!-- <div id="choose-word">Word</div> -->
-        </div>
-        <div id="option">
-            <div id="time">
-                <button data-timeLength="15">15</button>
-                <button data-timeLength="30">30</button>
-                <button class="current-time" data-timeLength="60">60</button>
-                <button data-timeLength="120">120</button>
+            <div id="choose-option">
+                <div id="choose-time">Select Time</div>
+                <!-- <div id="choose-word">Word</div> -->
             </div>
-            <!-- <div id="word">
-                <button data-wordLength="10">10</button>
-                <button data-wordLength="25">25</button>
-                <button data-wordLength="50">50</button>
-                <button data-wordLength="100">100</button> -->
-             <!-- </div> -->
-             
-     </div>
-     </div>
-</header>
-    <main>
+            <div id="option">
+                <div id="time">
+                    <button data-timeLength="15">15</button>
+                    <button data-timeLength="30">30</button>
+                    <button class="current-time" data-timeLength="60">60</button>
+                    <button data-timeLength="120">120</button>
+                </div>
+                <!-- <div id="word">
+                    <button data-wordLength="10">10</button>
+                    <button data-wordLength="25">25</button>
+                    <button data-wordLength="50">50</button>
+                    <button data-wordLength="100">100</button> -->
+                 <!-- </div> -->
+                 
+         </div>
+         </div>
         <div class="game-container">
             <div id="info">
-                <div id="timer">60</div>
+                <div id="timer"></div>
                 
            </div>
            
@@ -58,10 +36,32 @@
                 <span class="focus">Click here to Focus</span>
                 <div id="cursor">|</div>
             </div>
+            <div id="restart">RESTART</div>
+        </div>
+        <div id="result">
+            <div id="result-detail">
+                <div class="result-top">
 
+                    <div id="result-wpm">
+    
+                    </div>
+                    <div id="result-accuracy">
+    
+                    </div>
+                </div>
+                <div class="result-bottom">
+                    <div id="result-character">
+                        
+                    </div>
+                    <div id="result-type-game">
+                        
+                    </div>
+                </div>
+            </div>
+            
         </div>
 
 
     </main>
-</body>
-</html>
+
+{% endblock %}

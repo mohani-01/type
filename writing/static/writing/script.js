@@ -1,41 +1,56 @@
-const RANDOM_QUOTE_API_URL = 'https://api.quotable.io/random'
+// const RANDOM_QUOTE_API_URL = 'https://api.quotable.io/random'
+
+if (!localStorage.getItem("timer")) {
+    localStorage.setItem("timer", 60);
+
+}
+
 
 const textDisplay = document.getElementById('text')
+
+const gameContainer = document.querySelector('.game-container');
 
 const cursor = document.getElementById('cursor')
 const timer = document.getElementById('timer')
 const textContainer = document.querySelector(".text-container")
 const returnToFocus = document.querySelector(".focus")
+const chooseTime = document.getElementById('time')
 
-const timeSelector = document.getElementById('time')
+const timeSelector = localStorage.getItem("timer")
+
+for (let i = 0, N = chooseTime.children.length; i < N ; i++ ) {
+    if (chooseTime.children[i].innerHTML === timeSelector) {
+        addClass( chooseTime.children[i], "current-time")
+    } else {
+        removeClassAll(chooseTime.children[i])
+    }
+}
+
+gameContainer.style.opacity = 0;
 
 window.time = null;
-// // timeSelector.addEventListener("click", (event) => {
-//     const getTime = event.target;
+
+chooseTime.addEventListener("click", (event) => {
+    const getTime = event.target;
 
 
-//     if (getTime.dataset.timelength) {
-//         const num = parseInt(getTime.dataset.timelength)
-//         console.log("TExt Display",textDisplay)
-//         console.log( textDisplay.firstChild.style.marginTop , "BEFORE")
-//         textDisplay.firstChild.style.marginTop = "0px";    
-//         console.log( textDisplay.firstChild.style.marginTop,  "after")
-//         console.log(textDisplay.style.marginTop, "Style marginTop")
-//         renderText()
-//         console.log("TEXT Display new", textDisplay)
-//         console.log("ERrro",textDisplay.firstChild.nextSibling)
-//         // location.reload()
-//         // timer.innerText = getTime.dataset.timelength;
-//         // removeClass(timeSelector.querySelector(".current-time"), "current-time")
-//         // addClass(getTime, "current-time")
+    if (getTime.dataset.timelength) {
+        console.log(typeof(getTime.dataset.timelength))
+        localStorage.setItem("timer", getTime.dataset.timelength)
+
+        location.reload()
+        // timer.innerHTML = getTime.dataset.timelength;
+        // removeClass(timeSelector.querySelector(".current-time"), "current-time")
+        // addClass(getTime, "current-time")
         
-//     } 
+    } 
 
     
-// // })
+})
 
 
 function startTyping() {
+    gameContainer.style.opacity = 1;
     let gameStart = true;
     gameEnd = true;
     let parentWord = textDisplay.firstChild
@@ -99,7 +114,7 @@ function startTyping() {
         
 
 
-        // if (!(char === newLetter.innerText )) {
+        // if (!(char === newLetter.innerHTML )) {
         //     return
 
         // }
@@ -115,13 +130,13 @@ function startTyping() {
         console.log(parentWord, parentWord.nextSibling)
 
         // if the user get the letter correctly 
-        if ( char === newLetter.innerText ) {
+        if ( char === newLetter.innerHTML ) {
            
-            removeClassAll(newLetter)
+            // remove the current className from the previous letter and word
+             (newLetter)
             
             addClass(newLetter, "correct")
 
-            // remove the current className from the previous letter and word
             removeClass(parentWord, "current")
 
             // if there is no next sibling
@@ -129,8 +144,10 @@ function startTyping() {
             if (!newLetter.nextSibling) {
 
                 // if there is incorrect element in the Word
-                if (parentWord.querySelector(".incorrect, .previous-current")) {
+                if (parentWord.querySelector(".incorrect, .previous-current, .error")) {
                     addClass(parentWord, "incorrect-word")
+                    addClass(newLetter, "previous-current")
+                    // addClass(newLetter)
                 }
 
                 parentWord = parentWord.nextSibling
@@ -167,8 +184,8 @@ function startTyping() {
                 } else {
                     // check if there is previous Word an it contain an inccorect element
                     
-                    if (parentWord.previousSibling && parentWord.previousSibling.querySelector('.previous-current')) {
-                        
+                    if (parentWord.previousSibling && parentWord.previousSibling.querySelector('.previous-current, .error')) {
+                        console.log("Got it")
                         removeClass(parentWord, 'current')
                         removeClassAll(newLetter)
                         parentWord = parentWord.previousSibling
@@ -195,11 +212,13 @@ function startTyping() {
 
 
             // if wrong text is typed 
-            } else if (char !== newLetter.innerText ) {
+            } else if (char !== newLetter.innerHTML ) {
 
                 // check if there is a nextSibling
                 if (char === ' ') {
-                    if ((!parentWord.nextElementSibling )) {
+
+                    console.log("char" + char + "char" , "Space", newLetter.innerHTML === char, newLetter)
+                    if (!parentWord.nextSibling ) {
                         console.log(!parentWord.nextSibling, parentWord.nextSibling, "parentWord.nextSibling")
                         console.log(parentWord)
                         console.log("how this is even possible")
@@ -215,12 +234,14 @@ function startTyping() {
                     } else { 
                             removeClass(parentWord, "current")
                             removeClassAll(newLetter)
-                            addClass(newLetter, "previous-current")
-
-                            if (parentWord.querySelector(".incorrect, .previous-current")) {
+                            
+                            if (parentWord.querySelector(".incorrect, .error") || newLetter.nextSibling) {
+                                addClass(newLetter, "previous-current")
                                 addClass(parentWord, "incorrect-word")
+                                console.log("HI char === '' ")
+                                changetoPassed(newLetter)
                             }
-                            // changetoPassed(newLetter)
+
                             parentWord = parentWord.nextSibling;
                             console.log(parentWord, "HERE")
                             newLetter = parentWord.firstChild;
@@ -238,9 +259,9 @@ function startTyping() {
 
                 } else {
                     const error = document.createElement('span')
-                    addClass(error, "incorrect")
+                    // addClass(error, "incorrect")
                     addClass(error, "error")
-                    error.innerText = char;
+                    error.innerHTML = char;
                     parentWord.insertBefore(error, newLetter)
 
                 }
@@ -257,10 +278,10 @@ function startTyping() {
 
                 const currentTime = new Date(); 
                 const timepassed = parseInt((currentTime - newTime) / 1000)
-                if (timepassed >= 20 ) {
-                    textDisplay.style.display = "none"
+                if (timepassed >= timeSelector ) {
+                    endGame(textDisplay);
                 }
-                timer.innerHTML = `${20 - timepassed}` ;
+                timer.innerHTML = `${timeSelector - timepassed}` ;
             }, 500)
         }
         // if the element move downwar
@@ -268,7 +289,6 @@ function startTyping() {
         if (newLetter.getBoundingClientRect().top - heightTop > 70) {
             const topMargin = parseInt(textDisplay.style.marginTop || '0px')
             textDisplay.style.marginTop =  topMargin  - 35 + 'px';
-
             addNewText();
         }
     
@@ -284,7 +304,7 @@ function startTyping() {
 function getText() {
   
     
-    return fetch(`https://random-word-api.vercel.app/api?words=20`)
+    return fetch('https://random-word-api.vercel.app/api?words=20')
     .then(response => response.json())
     .then(data => data)
 }
@@ -295,7 +315,7 @@ async function renderText() {
     const text = await getText();
 
 
-    textDisplay.innerText = "";
+    textDisplay.innerHTML = "";
 
     renderLetter(text);
     
@@ -323,33 +343,35 @@ function removeClassAll(newLetter) {
 
 
 function endGame(text) {
-
+    clearInterval(window.time)
+    // timer.innerHTML = "";
     const correct = text.querySelectorAll('.correct').length;
     const incorrect = text.querySelectorAll('.incorrect').length;
     const additional = text.querySelectorAll('.error').length;
-    
+    const passed = text.querySelectorAll(".passed").length;
     console.log("All element", text)    
-    // textDisplay.innerText = "";
-    // textDisplay.innerText = `Correct: ${ correct } Incorrect: ${ incorrect } Additional: ${ additional }`
+    textDisplay.innerHTML = "";
+    gameContainer.style.display = 'none';
+    document.querySelector('#result').innerHTML = `Correct: ${ correct } Incorrect: ${ incorrect } Extra: ${ additional } Passed: ${ passed }`
 
 }
 
 
-// function changetoPassed(element) {
-//     while (element) {
-//         addClass(element, "passed")
+function changetoPassed(element) {
+    while (element) {
+        addClass(element, "passed")
         
-//         element = element.nextSibling
+        element = element.nextSibling
         
-//     }
-// }
+    }
+}
 
 
 
 async function addNewText() {
     const text = await getText();
     renderLetter(text)
-    window.time = null;
+    // window.time = null;
 
 
 }
@@ -360,13 +382,13 @@ function renderLetter(letter) {
             addClass(letterdiv, "letter")
             letter[i].split('').forEach(char => {
                 const charSpan = document.createElement('span')
-                charSpan.innerText = char;
+                charSpan.innerHTML = char;
                 letterdiv.appendChild(charSpan)
         })
 
         if (i !== N - 1) {
             const space = document.createElement('span')
-            space.innerText = ' ';
+            space.innerHTML = ' ';
             addClass(space, "space")
             letterdiv.appendChild(space)
         }
