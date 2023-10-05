@@ -1,11 +1,15 @@
 // const RANDOM_QUOTE_API_URL = 'https://api.quotable.io/random'
 
+
 if (!localStorage.getItem("timer")) {
     localStorage.setItem("timer", 60);
 
 }
 
+const returnToFocus = document.querySelector(".focus")
 
+
+const restart = document.getElementById('restart')
 const textDisplay = document.getElementById('text')
 
 const gameContainer = document.querySelector('.game-container');
@@ -13,10 +17,11 @@ const gameContainer = document.querySelector('.game-container');
 const cursor = document.getElementById('cursor')
 const timer = document.getElementById('timer')
 const textContainer = document.querySelector(".text-container")
-const returnToFocus = document.querySelector(".focus")
-const chooseTime = document.getElementById('time')
 
 const timeSelector = localStorage.getItem("timer")
+const chooseTime = document.getElementById('time')
+
+
 
 for (let i = 0, N = chooseTime.children.length; i < N ; i++ ) {
     if (chooseTime.children[i].innerHTML === timeSelector) {
@@ -33,23 +38,45 @@ window.time = null;
 chooseTime.addEventListener("click", (event) => {
     const getTime = event.target;
 
-
-    if (getTime.dataset.timelength) {
+    const timeAvailable = ["120", "60", "30", "15"]
+    if (getTime.dataset.timelength && timeAvailable.includes(getTime.dataset.timelength)) {
         console.log(typeof(getTime.dataset.timelength))
         localStorage.setItem("timer", getTime.dataset.timelength)
 
         location.reload()
-        // timer.innerHTML = getTime.dataset.timelength;
-        // removeClass(timeSelector.querySelector(".current-time"), "current-time")
-        // addClass(getTime, "current-time")
         
     } 
 
     
 })
 
+restart.addEventListener("click",() => {
+
+    location.reload()
+} )
+
+textDisplay.addEventListener('focusout', () => {
+    cursor.style.display = 'none';
+    textContainer.style.position = "relative";
+    returnToFocus.style.display = 'block';
+
+
+})
+
+document.addEventListener("change", () => {
+
+    if (!document.hasFocus()) {
+        cursor.style.display = 'none';
+        textContainer.style.position = "relative";
+        returnToFocus.style.display = 'block';
+    }
+})
+
+
 
 function startTyping() {
+
+
     gameContainer.style.opacity = 1;
     let gameStart = true;
     gameEnd = true;
@@ -65,19 +92,15 @@ function startTyping() {
     let newLetter = parentWord.firstChild
     console.log("newLetter > parentElement then does it have an error ", newLetter.parentElement,   newLetter.parentElement.nextElementSibling )
     addClass(newLetter,"current")
+
+   
     textDisplay.focus()
+
     cursor.style.top = parentWord.getBoundingClientRect().top + 'px';
     cursor.style.left = newLetter.getBoundingClientRect().left  - 6 +   'px';
     cursor.style.display = 'block';
 
 
-    textDisplay.addEventListener('focusout', () => {
-        cursor.style.display = 'none';
-        textContainer.style.position = "relative";
-        returnToFocus.style.display = 'block';
-
-
-    })
     textDisplay.addEventListener('focus', () => {
         if (gameStart) {
             cursor.style.top = parentWord.getBoundingClientRect().top   + 'px';
@@ -88,12 +111,14 @@ function startTyping() {
         cursor.style.display = 'block';
         textContainer.style.position = "static";
         returnToFocus.style.display = 'none';
+    
+    
+    
+    })  
 
+    
 
-
-    })
-
-
+    // returnToFocus.style.opacity = 0;
     // add event listener
     textDisplay.addEventListener('keyup', (event) => {
 
@@ -108,8 +133,7 @@ function startTyping() {
             return
         }
 
-
-
+       
         
         
 
@@ -304,7 +328,7 @@ function startTyping() {
 function getText() {
   
     
-    return fetch('https://random-word-api.vercel.app/api?words=20')
+    return fetch('https://random-word-api.vercel.app/api?words=70')
     .then(response => response.json())
     .then(data => data)
 }

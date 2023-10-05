@@ -5,3 +5,8 @@ from django.shortcuts import render
 
 def index(request):
     return render(request, "writing/index.html")
+
+
+def account(request):
+    # return HttpResponse("hello")
+    return render(request, "writing/profile.html")
