@@ -1,11 +1,12 @@
 {% extends 'writing/layout.html'%}
 
+{% block title %}
+WeType
+{% endblock %}
+
 {% block body %}
     <main>
         <div id="option">
-
-                
-            
 
                 <div id="time">
                     <button data-timeLength="15">15</button>
@@ -13,13 +14,7 @@
                     <button class="current-time" data-timeLength="60">60</button>
                     <button data-timeLength="120">120</button>
                 </div>
-                <!-- <div id="word">
-                    <button data-wordLength="10">10</button>
-                    <button data-wordLength="25">25</button>
-                    <button data-wordLength="50">50</button>
-                    <button data-wordLength="100">100</button> -->
-                 <!-- </div> -->
-                 
+               
 
          </div>
         <div class="game-container">
@@ -42,6 +37,7 @@
                   </svg>
             </div>
         </div>
+
         <div id="result">
             <div id="result-detail">
                 <div class="result-top">
@@ -54,6 +50,9 @@
                     </div>
                 </div>
                 <div class="result-bottom">
+                    <div id="result-raw">
+                        
+                    </div>
                     <div id="result-character">
                         
                     </div>

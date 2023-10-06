@@ -28,6 +28,27 @@ body > * {
     background: #464337;
 
 }
+#logo {
+    display: flex;
+    /* width: 2rem; */
+    font-size: 1rem;
+    align-items: center;
+    color: black !important;
+    text-decoration: none !important;
+    border: 2px solid rgb(194, 194, 126);
+
+}
+
+#logo > svg {
+    width: 2rem;
+    height: auto;
+    border: 2px solid beige;
+    padding: 0;
+    margin: 0;
+    color: inherit;
+    
+}
+
 
 #user > svg {
     color: blue;
@@ -85,8 +106,10 @@ main {
 .text-container {
     height: 105px;
     overflow: hidden;
-    font-family: 'Roboto Mono', monospace;
-    font-weight: 200;
+    /* font-family: 'Oswald', sans-serif; */
+    font-family: 'Roboto', sans-serif;
+    /* font-family: 'Roboto Mono', monospace; */
+    /* font-weight: 200; */
 
 }
 
@@ -96,6 +119,7 @@ main {
     flex-wrap: wrap;
     font-size: 1rem;
     text-align: justify;
+    align-items: center;
     line-height: 35px;
     
     color: rgba(255, 255, 255, 0.385);
@@ -151,8 +175,10 @@ main {
     animation-iteration-count: infinite;
     animation-duration: 1s;
     color: rgb(255, 247, 0);
-    font-size: 1rem;
+    /* font-size: 1.2rem; */
+    font-weight: 500;
     padding-bottom: 2rem;
+    /* line-height: 35px; */
     position: absolute;
     /* user-select: none; */
     /* z-index: 343; */
@@ -173,7 +199,7 @@ main {
 }
 
 
-.letter {
+.word {
   padding-right: 10px;  
 
 } 
@@ -219,3 +245,15 @@ button.current-time {
 
 
 
+
+#result-detail {
+    display: flex;
+    /* flex-direction: column; */
+    font-size: 1rem;
+    color: rgb(255, 192, 74);
+}
+
+#result-top {
+    display: flex;
+    font-size: 4rem;
+}

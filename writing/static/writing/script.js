@@ -6,6 +6,9 @@ if (!localStorage.getItem("timer")) {
 
 }
 
+
+const audio = new Audio('../static/writing/typing.wav')
+
 const returnToFocus = document.querySelector(".focus")
 
 
@@ -63,20 +66,27 @@ textDisplay.addEventListener('focusout', () => {
 
 })
 
-document.addEventListener("change", () => {
+
 
     if (!document.hasFocus()) {
         cursor.style.display = 'none';
         textContainer.style.position = "relative";
         returnToFocus.style.display = 'block';
     }
-})
 
 
+
+let correctLetter = 0
+let incorrectLetter = 0
 
 function startTyping() {
 
 
+    if (!document.hasFocus()) {
+        cursor.style.display = 'none';
+        textContainer.style.position = "relative";
+        returnToFocus.style.display = 'block';
+    }
     gameContainer.style.opacity = 1;
     let gameStart = true;
     gameEnd = true;
@@ -96,18 +106,19 @@ function startTyping() {
    
     textDisplay.focus()
 
-    cursor.style.top = parentWord.getBoundingClientRect().top + 'px';
-    cursor.style.left = newLetter.getBoundingClientRect().left  - 6 +   'px';
+    cursor.style.top = parentWord.getBoundingClientRect().top + 3 + 'px';
+    cursor.style.left = newLetter.getBoundingClientRect().left - 2  +   'px';
     cursor.style.display = 'block';
 
+    
 
     textDisplay.addEventListener('focus', () => {
         if (gameStart) {
-            cursor.style.top = parentWord.getBoundingClientRect().top   + 'px';
-            cursor.style.left = newLetter.getBoundingClientRect().left - 6 + 'px';
+            cursor.style.top = parentWord.getBoundingClientRect().top + 3  + 'px';
+            cursor.style.left = newLetter.getBoundingClientRect().left - 2 + 'px';
         } 
-        cursor.style.top = parentWord.getBoundingClientRect().top + 'px';
-        cursor.style.left = newLetter.getBoundingClientRect().left  - 6 +   'px';
+        cursor.style.top = parentWord.getBoundingClientRect().top + 3 + 'px';
+        cursor.style.left = newLetter.getBoundingClientRect().left - 2 +   'px';
         cursor.style.display = 'block';
         textContainer.style.position = "static";
         returnToFocus.style.display = 'none';
@@ -120,9 +131,12 @@ function startTyping() {
 
     // returnToFocus.style.opacity = 0;
     // add event listener
+    
     textDisplay.addEventListener('keyup', (event) => {
 
-
+        if (textDisplay.className.includes('end')) {
+            return;
+        }
         // key not to responed to
         const notKey = ["Shift", "Meta", "Enter", "Alt", "Control", "CapsLock"]
         const char = event.key
@@ -152,10 +166,14 @@ function startTyping() {
              return
         }
         console.log(parentWord, parentWord.nextSibling)
+        audio.pause()
+        audio.currentTime = 0;
+
+        audio.play()
 
         // if the user get the letter correctly 
         if ( char === newLetter.innerHTML ) {
-           
+           correctLetter++;
             // remove the current className from the previous letter and word
              (newLetter)
             
@@ -188,6 +206,7 @@ function startTyping() {
         
         // incorrect
         } else {
+            incorrectLetter++;
             // first if it is backspace
             if (char === 'Backspace') {
 
@@ -262,7 +281,6 @@ function startTyping() {
                             if (parentWord.querySelector(".incorrect, .error") || newLetter.nextSibling) {
                                 addClass(newLetter, "previous-current")
                                 addClass(parentWord, "incorrect-word")
-                                console.log("HI char === '' ")
                                 changetoPassed(newLetter)
                             }
 
@@ -304,6 +322,8 @@ function startTyping() {
                 const timepassed = parseInt((currentTime - newTime) / 1000)
                 if (timepassed >= timeSelector ) {
                     endGame(textDisplay);
+                    addClass(textDisplay, "end");
+                    return;
                 }
                 timer.innerHTML = `${timeSelector - timepassed}` ;
             }, 500)
@@ -316,10 +336,10 @@ function startTyping() {
             addNewText();
         }
     
-        cursor.style.top = parentWord.getBoundingClientRect().top  + 'px';
-        cursor.style.left = newLetter.getBoundingClientRect().left - 6 + 'px';
-        
-    })
+        cursor.style.top = parentWord.getBoundingClientRect().top + 3 + 'px';
+        cursor.style.left = newLetter.getBoundingClientRect().left - 2  + 'px';
+        // audio.pause()
+        })
 
 }
 
@@ -328,7 +348,7 @@ function startTyping() {
 function getText() {
   
     
-    return fetch('https://random-word-api.vercel.app/api?words=70')
+    return fetch('https://random-word-api.vercel.app/api?words=100&length=5')
     .then(response => response.json())
     .then(data => data)
 }
@@ -337,15 +357,9 @@ function getText() {
 async function renderText() {
 
     const text = await getText();
-
-
     textDisplay.innerHTML = "";
-
-    renderLetter(text);
-    
-
-
-    
+    renderWords(text);
+        
 
     startTyping()
 }
@@ -369,14 +383,35 @@ function removeClassAll(newLetter) {
 function endGame(text) {
     clearInterval(window.time)
     // timer.innerHTML = "";
+
+
     const correct = text.querySelectorAll('.correct').length;
     const incorrect = text.querySelectorAll('.incorrect').length;
     const additional = text.querySelectorAll('.error').length;
     const passed = text.querySelectorAll(".passed").length;
+    const allWords = [...text.querySelectorAll('.word')]
+
+
+
+    const lastWord = text.querySelector('.word.current')
+    const lastIndex = allWords.indexOf(lastWord);
+    const typedWords = allWords.slice(0, lastIndex)
+    const incorectWords = [...text.querySelectorAll('.word.incorrect-word')];
+
+
+    document.getElementById('result-accuracy').innerHTML = `${parseInt(((correctLetter - incorrectLetter) / (incorrectLetter + correctLetter)) * 100)} % Accuracy`
+    document.getElementById('result-wpm').innerHTML = `${((typedWords.length - incorectWords.length)/ timeSelector) * 60 } WPM`;
+    document.getElementById('result-character').innerHTML =  `Characters <br> ${ correct} / ${incorrect} / ${additional} / ${passed}`
+    document.getElementById('result-raw').innerHTML = `${ typedWords.length / timeSelector * 60} RAW`
+    document.getElementById('result-type-game').innerHTML =  `Time: ${ timeSelector} Sec`
+
+
+
     console.log("All element", text)    
     textDisplay.innerHTML = "";
     gameContainer.style.display = 'none';
-    document.querySelector('#result').innerHTML = `Correct: ${ correct } Incorrect: ${ incorrect } Extra: ${ additional } Passed: ${ passed }`
+    document.querySelector('#result').style.display = "block";
+    // document.querySelector('#result-character').innerHTML = `Correct: ${ correct } Incorrect: ${ incorrect } Extra: ${ additional } Passed: ${ passed }`
 
 }
 
@@ -394,16 +429,16 @@ function changetoPassed(element) {
 
 async function addNewText() {
     const text = await getText();
-    renderLetter(text)
+    renderWords(text)
     // window.time = null;
 
 
 }
 
-function renderLetter(letter) {
+function renderWords(letter) {
     for (let i = 0, N = letter.length; i < N; i++) {
             const letterdiv = document.createElement('div');
-            addClass(letterdiv, "letter")
+            addClass(letterdiv, "word")
             letter[i].split('').forEach(char => {
                 const charSpan = document.createElement('span')
                 charSpan.innerHTML = char;
