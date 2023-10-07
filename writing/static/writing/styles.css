@@ -1,5 +1,5 @@
 :root {
-    font-size: 22px;
+    font-size: 27px;
 }
 
 body, * {
@@ -8,14 +8,14 @@ body, * {
     margin: 0;
 }
 body {
-    background: #464337;
+    background: #323437;
 
 }
 
 
 body > * {
     width: 100%;
-    max-width: 1100px;
+    max-width: 1300px;
     margin: auto;
     padding: 1rem 2rem;
     background: #464337;
@@ -107,7 +107,8 @@ main {
     height: 105px;
     overflow: hidden;
     /* font-family: 'Oswald', sans-serif; */
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto Condensed', sans-serif;
+    /* font-weight: 200; */
     /* font-family: 'Roboto Mono', monospace; */
     /* font-weight: 200; */
 
@@ -121,13 +122,13 @@ main {
     text-align: justify;
     align-items: center;
     line-height: 35px;
+    /* font-weight: 300  !important; */
     
     color: rgba(255, 255, 255, 0.385);
 
     filter: blur(5px);
-
-    outline: none;   
     padding: 0 1rem;
+    outline: none;   
     transition: filter 2s ease;
     z-index: 2;
     user-select: none;
@@ -248,7 +249,6 @@ button.current-time {
 
 #result-detail {
     display: flex;
-    /* flex-direction: column; */
     font-size: 1rem;
     color: rgb(255, 192, 74);
 }
@@ -257,3 +257,9 @@ button.current-time {
     display: flex;
     font-size: 4rem;
 }
+
+/* #next-game {
+    padding: 2rem;
+    width: max-content;
+    margin: auto;
+} */
