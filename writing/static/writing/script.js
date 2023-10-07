@@ -349,7 +349,7 @@ function startTyping() {
                     addClass(textDisplay, "end");
                     return;
                 }
-                timer.innerHTML = `${timeSelector - timepassed}` ;
+                timer.innerHTML = renderTime(timeSelector, timepassed ) ;
             }, 500)
         }
         // if the element move downwar
@@ -568,4 +568,18 @@ function getCookie(name) {
     }
 
     return cookieValue;
+}
+
+function renderTime(totaltime , passed) {
+    const currentTime = totaltime - passed;
+    const minute =  (Math.floor(currentTime / 60 )).toString()
+    const second = (Math.floor(currentTime % 60))
+    let stringSecond;
+    if (second > 9) {
+
+         stringSecond = second.toString().padEnd(2, "0")
+    } else  stringSecond = second.toString().padStart(2, "0")
+
+    return  `${minute.padStart(2, "0")}:${stringSecond}`
+
 }
