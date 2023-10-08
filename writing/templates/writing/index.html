@@ -62,7 +62,13 @@ WeType
                         
                     </div>
                 </div>
-                <div id="next-game">^</div>
+                {% if not user.is_authenticated %}
+                <div class="login-redirect">
+
+                    <a href="{% url 'login' %}">Login In</a> to save your progress
+                </div>
+                {% endif %}
+                <div id="next-game"><span class="next">Next</span> > <span class="next">Game</span> </div>
             </div>
         </div>
 

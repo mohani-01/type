@@ -1,0 +1,45 @@
+{% extends 'writing/layout.html' %}
+
+{% block body %}
+<div class="login">
+    <form action="{% url 'register' %}" method="post">
+        {% csrf_token %}
+        <div class="title">Register</div>
+        <div class="form-input">
+            <input autocomplete="off" type="text" name="username" placeholder="username">
+        </div>
+        <div class="form-input">
+            <input autocomplete="off"  class="form-control" type="email" name="email" placeholder="Email Address">
+        </div>
+        <div class="form-input">
+            <input autocomplete="off" class="form-control" type="password" name="password" placeholder="Password">
+        </div>
+        <div class="form-input">
+            <input autocomplete="off" class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+        </div>
+        <div class="form-button">
+    
+            <input autocomplete="off" class="btn btn-primary" type="submit" value="Register">
+        </div>
+    </form>
+    
+    
+        
+    <form  action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <div class="title">Login</div>
+        <div class="form-input">
+            <input autocomplete="off" autofocus class="form-control" type="text" name="username" placeholder="username">
+        </div>
+        <div class="form-input">
+            <input autocomplete="off" class="form-control" type="password" name="password" placeholder="Password">
+        </div>
+        <div class="form-button">
+    
+            <input autocomplete="off" class="btn btn-primary" type="submit" value="Login">
+        </div>
+    </form>
+
+</div>
+
+{% endblock %}

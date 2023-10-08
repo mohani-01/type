@@ -13,19 +13,19 @@ body {
 }
 
 
+
 body > * {
     width: 100%;
     max-width: 1300px;
     margin: auto;
     padding: .5rem 2rem;
-    background: #464337;
+    background: #323437 !important;
 
 }
 
 #header {
     display: flex;
     justify-content: space-between;
-    background: #464337;
 
 }
 #logo {
@@ -33,7 +33,7 @@ body > * {
     /* width: 2rem; */
     font-size: 1rem;
     align-items: center;
-    color: black !important;
+    color: rgb(255, 255, 255) !important;
     text-decoration: none !important;
     border: 2px solid rgb(194, 194, 126);
     font-family: 'Bebas Neue', sans-serif;
@@ -48,13 +48,15 @@ body > * {
     border: 2px solid beige;
     padding: 0;
     margin: 0;
-    color: inherit;
+    color: white;
+    background:#171713;
+    
     
 }
 
 
 #user > svg {
-    color: blue;
+    color: white;
     width: 1.2rem;
     height: auto;
 }
@@ -65,7 +67,7 @@ body > * {
     padding: .3rem 2rem;
     border-radius: 25px;
     /* border: 2px solid rgb(44, 44, 44); */
-    background: rgba(100, 96, 96, 0.582);
+    background: #161616;
 }
 
 
@@ -106,7 +108,7 @@ main {
 
 
 .text-container {
-    height: 105px;
+    height: 120px;
     overflow: hidden;
     /* font-family: 'Oswald', sans-serif; */
     font-family: 'Roboto Condensed', sans-serif;
@@ -123,7 +125,7 @@ main {
     font-size: 1rem;
     text-align: justify;
     align-items: center;
-    line-height: 35px;
+    line-height: 40px;
     /* font-weight: 300  !important; */
     
     color: rgba(255, 255, 255, 0.385);
@@ -213,7 +215,7 @@ main {
 }
 
 button.current-time {
-    color: yellow !important;
+    color: rgb(255, 192, 74) !important;
 }
 
 .error {
@@ -230,9 +232,9 @@ button.current-time {
 }
 
 #restart  {
-    margin: 1rem;
+    margin: 2rem;
     width: 1.2rem;
-    font-weight: bolder;
+    font-size: 2rem;
     height: auto;
     color: white;
     transform: rotate(45deg);
@@ -242,7 +244,7 @@ button.current-time {
 
 #restart:hover {
     transform: rotate(405deg);
-    color: yellow;
+    color: rgb(255, 192, 74);
 
 }
 
@@ -313,14 +315,21 @@ button.current-time {
 }
 
 #next-game {
-    font-size: 2rem;
-    transform: rotate(90deg);
+    font-size: 1.5rem;
+    /* transform: rotate(90deg); */
     transition: color 300ms ease-in;
     font-weight: 800;
+    font-family: 'Roboto Condensed', sans-serif;
+
 }
 
 #next-game:hover {
-    color: orange;
+    color: rgb(255, 192, 74);
+    cursor: pointer;
+}
+
+#next-game:hover > .next {
+    opacity: 1;
 }
 
 #input-text {
@@ -329,3 +338,60 @@ button.current-time {
     height: auto;
     z-index: 9898;
 }
+
+.next {
+    opacity: 0;
+}
+
+
+.login-redirect {
+    margin: 10px;
+    color: white;  
+    font-size: 18px;
+
+}
+
+.login-redirect > a {
+    color: silver;
+}
+
+
+
+
+
+.login {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;;
+    align-items: flex-start;
+    padding-top: calc(100vh * 0.20);
+}
+
+.login > form {
+    /* height: 200px; */
+    margin: 20px;
+}
+
+.title {
+    font-family: monospace;
+}
+
+.form-input {
+    width: auto;
+    padding: .15rem 0;
+}
+
+.form-input > input {
+    /* line-height: 30px; */
+    font-size: 15px;
+    padding: 10px;
+    outline: none;
+}
+
+.form-button > input {
+    width: 100%;
+    padding: 10px ;
+    margin: 10px 0;
+}
+
+

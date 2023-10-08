@@ -375,7 +375,7 @@ function startTyping() {
         // console.log(newLetter.getBoundingClientRect().top - heightTop)
         if (newLetter.getBoundingClientRect().top - heightTop > 70) {
             const topMargin = parseInt(textDisplay.style.marginTop || '0px')
-            textDisplay.style.marginTop =  topMargin  - 35 + 'px';
+            textDisplay.style.marginTop =  topMargin  - 40 + 'px';
             addNewText();
         }
     
@@ -400,8 +400,9 @@ function getText() {
     // }
     //     )
     // .then(data => data)
-        words = []
-    for(let i = 0, N = textToRender.length; i < 200; i++ ) {
+
+    words = []
+    for(let i = 0, N = textToRender.length; i < 100; i++ ) {
        const index = Math.ceil((Math.random() / 4) * 1000)
          words.push(textToRender[index])
      }
@@ -459,7 +460,7 @@ function endGame(text) {
 
     const accuracy  = parseInt((correctLetter / totalLetter) * 100);
     const wpm = Math.floor(((typedWords.length - incorectWords.length)/ timeSelector) * 60)
-    const character = `${ correct} / ${incorrect} / ${additional} / ${passed}`
+    const character = `${ correct}/${incorrect}/${additional}/${passed}`
     const raw = Math.ceil(typedWords.length / timeSelector * 60)
     const time = timeSelector
     const result = [wpm, raw, accuracy,  time, character]
@@ -467,7 +468,7 @@ function endGame(text) {
     document.getElementById('result-accuracy').innerHTML = `${accuracy}% <br> Accuracy`;
     document.getElementById('result-wpm').innerHTML =  `${ wpm }<br> WPM`;
     document.getElementById('result-character').innerHTML =  `Characters  <br> ${ character } <br> <span class="char-message">Correct/Incorrect/Extra/Passed</span>`;
-    document.getElementById('result-raw').innerHTML = `${ raw} RAW`
+    document.getElementById('result-raw').innerHTML = `${ raw} RAW Speed`
     document.getElementById('result-type-game').innerHTML =  `Time: ${  time} Sec`
 
 

@@ -4,3 +4,28 @@
 {% block title %}
 WeType - Profile
 {% endblock %}
+
+{% block body %}
+    <!-- <div>Totat test: {{tests.all.count }} </div> -->
+    {% for value, test in tests.items %}
+    <div>
+        {% if test %}
+        <div>
+            Test Type: <span>{{value }}</span>
+        </div> 
+        <div>
+            Speed: <span>{{ test.speed }} </span>
+        </div>
+         <div>
+            Accuracy: <span>{{ test.accuracy }}  {{ value }} </span>
+        </div> 
+        <div>
+            Characters: <span> {{ test.character }} </span>
+        </div>
+       
+        {% endif %}
+    </div>
+
+    
+    {% endfor %}
+{% endblock %}
