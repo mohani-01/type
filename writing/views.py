@@ -9,7 +9,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
 from json import dump
 import csv
-from .models import Test, User
+from .models import Test_Time, User, Test_Word
 from .helpers import *
 # Create your views here.
 
@@ -37,21 +37,18 @@ def account(request):
 #     for readd in read:
 #         print(readd)
 #     file.close()
-#     return HttpResponseRedirect(reverse('index'))
+#     return HttpRespons~eRedirect(reverse('index'))
 
 
 
 @login_required(login_url='/login')
-def save(request):
+def save_time(request):
     
     if request.method == "POST":
         print(request.user)
         data = json.loads(request.body)
 
 
-
-        all_data = data.get("wpm") == data.get("raw") == data.get("accuracy") == data.get("time") == data.get("char")
-        print("WPM", data.get("wpm"), "rAW", data.get("raw"), "ACCURACY", data.get("accuracy"), "Time", data.get("time"), "Char", data.get("char"), "<<End", data.get("wpm") == data.get("raw") == data.get("accuracy") == data.get("time") == data.get("char"))
         if not data.get("wpm") or not  data.get("raw") or not data.get("accuracy") or not data.get("time") or not data.get("char"):
             return JsonResponse({"error":"One or more fields are missing"}, status=400)
 
@@ -61,7 +58,7 @@ def save(request):
         if not int(data.get('time'))  in test_types:
             print("Error", type(data.get('time')))
             return JsonResponse({"error": "Incorrect test type!"}, status=406)
-        test = Test(
+        test = Test_Time(
             user = request.user,
             text_types = data.get("time"),
             speed = data.get("wpm"),
@@ -74,6 +71,34 @@ def save(request):
         return JsonResponse({"success":"Test is sucessfully saved."}, status=201)
  
         
+def save_word(request):
+    if request.method == "POST":
+
+        data = json.loads(request.body)
+        
+        if not data.get("wpm") or not  data.get("raw") or not data.get("accuracy") or not data.get("time") or not data.get("char") or not data.get("type"):
+            return JsonResponse({"error":"One or more fields are missing"}, status=400)
+
+
+        test_types = [10, 25, 50, 100]
+
+
+        if not int(data.get('type'))  in test_types:
+            return JsonResponse({"error": "Incorrect test type!"}, status=406)
+       
+        test = Test_Word(
+            user = request.user,
+            test_type = data.get("type"),
+            speed = data.get("wpm"),
+            accuracy = data.get("accuracy"), 
+            raw_speed = data.get("raw"),
+            character = data.get("char")
+        )
+        test.save()
+
+        return JsonResponse({"success":"Test is sucessfully saved."}, status=201)
+ 
+    ...
 
 
 def login_view(request):

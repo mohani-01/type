@@ -50,6 +50,7 @@ const textDisplay = document.getElementById('text')
 const gameContainer = document.querySelector('.game-container');
 
 const cursor = document.getElementById('cursor')
+const timer = document.getElementById('timer')
 const textContainer = document.querySelector(".text-container")
 
 const timeSelector = localStorage.getItem("time")
@@ -104,7 +105,7 @@ if (choose == "time") {
 
 
 
-
+window.timepassed = null;
 window.time = null;
 
 
@@ -364,12 +365,7 @@ function startTyping() {
 
                     // console.log("char" + char + "char" , "Space", newLetter.innerHTML === char, newLetter)
                     if (!parentWord.nextSibling ) {
-                        // console.log(!parentWord.nextSibling, parentWord.nextSibling, "parentWord.nextSibling")
-                        // console.log(parentWord)
-                        // console.log("how this is even possible")
-                        // console.log("parent", parentWord.parentElement)
-                        // console.log("to compare", newLetter.parentElement)
-                        // alert("WY")
+                       
                         endGame(textDisplay);
                         return;
                     // if user click space in the first letter of a word
@@ -412,30 +408,16 @@ function startTyping() {
             }
         }
 
-        if (!window.time) {
-            let newTime
-            window.time = setInterval(() => {
-                if (!newTime ) {
-                    window.time = true;
-                    newTime = new Date();
-                }
-
-                const currentTime = new Date(); 
-                const timepassed = parseInt((currentTime - newTime) / 1000)
-                if (timepassed >= timeSelector ) {
-                    endGame(textDisplay);
-                    addClass(textDisplay, "end");
-                    return;
-                }
-                timer.innerHTML = renderTime(timeSelector, timepassed ) ;
-            }, 500)
-        }
+        timerCounter();
+        
         // if the element move downwar
         // console.log(newLetter.getBoundingClientRect().top - heightTop)
         if (newLetter.getBoundingClientRect().top - heightTop > 70) {
             const topMargin = parseInt(textDisplay.style.marginTop || '0px')
             textDisplay.style.marginTop =  topMargin  - 40 + 'px';
-            addNewText();
+            if (choose === 'time') {
+                addNewText();
+            }
         }
     
         cursor.style.top = parentWord.getBoundingClientRect().top + 'px';
@@ -447,7 +429,7 @@ function startTyping() {
 
 
 
-function getText() {
+function getText(number=200) {
   
 
     
@@ -460,21 +442,26 @@ function getText() {
     //     )
     // .then(data => data)
 
-    words = []
-    for(let i = 0, N = textToRender.length; i < 100; i++ ) {
+    let words = []
+    for(let i = 0, N = textToRender.length; i < number; i++ ) {
        const index = Math.ceil((Math.random() / 4) * 1000)
          words.push(textToRender[index])
      }
-     console.log(words)
+
    return words
 }
 
 
-async function renderText() {
-
-    const text = await getText();
-    console.log(text)
+function renderText() {
     textDisplay.innerHTML = "";
+    let text;
+    if (choose == "word") {
+
+        text = getText(wordSelector);
+    } else {
+        text = getText();
+    }
+
   
     renderWords(text);
         
@@ -499,8 +486,17 @@ function removeClassAll(newLetter) {
 
 
 function endGame(text) {
+    let timeSpend;
+    if (choose == 'time') {
+        timeSpend = timeSelector;
+    } else if (choose == 'word') {
+        timeSpend = window.timepassed;
+
+    }
+
+
     clearInterval(window.time)
-    // timer.innerHTML = "";
+    console.log(window.timepassed)
 
 
     const correct = text.querySelectorAll('.correct').length;
@@ -516,19 +512,22 @@ function endGame(text) {
     const typedWords = allWords.slice(0, lastIndex)
     const incorectWords = [...text.querySelectorAll('.word.incorrect-word')];
 
-
+    // the same
     const accuracy  = parseInt((correctLetter / totalLetter) * 100);
-    const wpm = Math.floor(((typedWords.length - incorectWords.length)/ timeSelector) * 60)
+    //not the same
+    const wpm = Math.floor(((typedWords.length - incorectWords.length)/ timeSpend) * 60)
+    
+    // the same
     const character = `${ correct}/${incorrect}/${additional}/${passed}`
-    const raw = Math.ceil(typedWords.length / timeSelector * 60)
-    const time = timeSelector
+    const raw = Math.ceil(typedWords.length / timeSpend * 60)
+    const time = timeSpend
     const result = [wpm, raw, accuracy,  time, character]
     sendResult(result)
     document.getElementById('result-accuracy').innerHTML = `${accuracy}% <br> Accuracy`;
     document.getElementById('result-wpm').innerHTML =  `${ wpm }<br> WPM`;
     document.getElementById('result-character').innerHTML =  `Characters  <br> ${ character } <br> <span class="char-message">Correct/Incorrect/Extra/Passed</span>`;
     document.getElementById('result-raw').innerHTML = `${ raw} RAW Speed`
-    document.getElementById('result-type-game').innerHTML =  `Time: ${  time} Sec`
+    document.getElementById('result-type-game').innerHTML =  `Time: ${ time} Sec`
 
 
 
@@ -554,11 +553,9 @@ function changetoPassed(element) {
 
 
 
-async function addNewText() {
-    const text = await getText();
+function addNewText() {
+    const text =  getText();
     renderWords(text)
-    // window.time = null;
-
 
 }
 
@@ -592,30 +589,60 @@ renderText()
 
 
 function sendResult(result) {
+
     const csrf = getCookie("csrftoken")
-    // [wpm, raw, accuracy,  time, character]
-    fetch('save', {
-        method : "Post",
-        body : JSON.stringify({
-            "wpm": result[0],
-            "raw": result[1],
-            "accuracy": result[2],
-            "time": result[3],
-            "char": result[4]
-        }),
+    if (choose === "time") {
+        // [wpm, raw, accuracy,  time, character]
+        fetch('save/time', {
+            method : "POST",
+            body : JSON.stringify({
+                "wpm": result[0],
+                "raw": result[1],
+                "accuracy": result[2],
+                "time": result[3],
+                "char": result[4]
+            }),
+    
+            headers : {
+                "X-CSRFToken" : csrf,
+                "Content-Type" : "application/json"
+            }
+        })
+    
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                console.error(data.error)
+            }
+        })
 
-        headers : {
-            "X-CSRFToken" : csrf,
-            "Content-Type" : "application/json"
-        }
-    })
+    } else if (choose === "word") {
+        //
+        fetch('save/word', {
+            method: "POST", 
+            body : JSON.stringify({
+                "type": wordSelector,
+                "wpm": result[0],
+                "raw": result[1],
+                "accuracy": result[2],
+                "time": result[3],
+                "char": result[4]
+            }), 
+            headers : {
+                'X-CSRFToken' : csrf,
+                'Content-Type' : 'application/json'
+            }
+        })
+        
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                console.log(data.error)
+            }
+        })
+        .catch(error => console.log(error))
 
-    .then(response => response.json())
-    .then(data => {
-        if (data.error) {
-            console.error(data.error)
-        }
-    })
+    }
 }
 
 
@@ -650,3 +677,33 @@ function renderTime(totaltime , passed) {
     return  `${minute.padStart(2, "0")}:${stringSecond}`
 
 }
+
+function timerCounter() {
+
+
+        if (!window.time) {
+            let newTime;
+            window.time = setInterval(() => {
+                if (!newTime ) {
+                    // window.time = true;
+                    newTime = new Date();
+                }
+    
+                const currentTime = new Date(); 
+                window.timepassed = parseInt((currentTime - newTime) / 1000)
+                
+                    if (choose === 'time') {
+                        if (timepassed >= timeSelector ) {
+                            endGame(textDisplay);
+                            addClass(textDisplay, "end");
+                            return ; 
+                        }
+
+                    timer.innerHTML = renderTime(timeSelector, window.timepassed ) ;
+                    }
+
+            }, 500)
+
+        }
+
+    }
