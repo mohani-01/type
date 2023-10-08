@@ -6,14 +6,24 @@ WeType
 
 {% block body %}
     <main>
-        <div id="option">
+        <div id="chooses" >
+            <div class="choose" id="options">
 
-                <div id="time">
-                    <button data-timeLength="15">15</button>
-                    <button data-timeLength="30">30</button>
-                    <button class="current-time" data-timeLength="60">60</button>
-                    <button data-timeLength="120">120</button>
-                </div>
+                <button id="choose-word">Word</button>
+                <button id="choose-time">Time</button>
+            </div>
+            <div class="word choose" id="word">
+                <button data-choose="10">10</button>
+                <button data-choose="25">25</button>
+                <button data-choose="50">50</button>
+                <button data-choose="100">100</button>
+            </div>
+            <div class="choose" id="time">
+                <button data-choose="15">15</button>
+                <button data-choose="30">30</button>
+                <button data-choose="60">60</button>
+                <button data-choose="120">120</button>
+            </div>
                
 
          </div>

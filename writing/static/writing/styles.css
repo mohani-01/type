@@ -61,17 +61,24 @@ body > * {
     height: auto;
 }
 
-#time {
-    width: max-content;
-    margin: auto;
-    padding: .3rem 2rem;
+#chooses {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid white;
+    background-color: #161616;
+}
+
+.choose {
+    /* width: max-content;
+    margin: auto; */
+    /* padding: .3rem 2rem; */
     border-radius: 25px;
-    /* border: 2px solid rgb(44, 44, 44); */
     background: #161616;
 }
 
 
-#time > button {
+.choose > button {
     border: none;
     font-size: .7rem;
     color:  rgba(255, 255, 255, 0.5);
@@ -80,7 +87,7 @@ body > * {
     /* margin: .1rem .3rem .2rem .3rem; */
 }
 
-#time > button:hover {
+.choose > button:hover {
     color: rgb(246, 246, 246) !important;
 }
 
@@ -94,6 +101,8 @@ main {
 #timer {
     height: 35px;
     text-align: justify;
+    font-family: 'Bebas Neue', sans-serif;
+    color: rgb(255, 202, 103);
 }
 
 
@@ -214,7 +223,7 @@ main {
     text-decoration-color: red;
 }
 
-button.current-time {
+button.current {
     color: rgb(255, 192, 74) !important;
 }
 

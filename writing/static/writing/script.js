@@ -1,4 +1,17 @@
 // const RANDOM_QUOTE_API_URL = 'https://api.quotable.io/random'
+if (!localStorage.getItem("choose")) {
+    localStorage.setItem("choose", "time")
+}
+
+const choose = localStorage.getItem("choose")
+
+if (!localStorage.getItem("time")) {
+    localStorage.setItem("time", 60);
+}
+
+if (!localStorage.getItem("word")) {
+    localStorage.setItem("word", 25)
+}
 
 const textToRender = ['the', 'of', 'to', 'and', 'a', 'in', 'is', 'it', 'you', 'that', 'he', 'was', 'for', 'on', 'are', 'with', 'as', 'I', 'his', 'they', 'be', 'at', 'one', 'have', 'this', 'from', 'or', 'had', 'by', 'not', 'word', 'but', 'what', 'some', 'we', 'can', 'out', 'other', 'were', 'all', 'there', 'when', 'up', 'use', 'your', 'how', 'said', 'an', 'each', 'she', 'which', 'do', 'their', 'time', 'if', 'will', 'way', 'about', 'many', 
                     'then', 'them', 'write', 'would', 'like', 'so', 'these', 'her', 'long', 'make', 'thing', 'see', 'him', 'two', 'has', 'look', 'more', 'day', 'could', 'go', 'come', 'did', 'number','sound', 'no', 'most', 'people', 'my', 'over', 'know', 'water', 'than', 'call', 'first', 'who', 'may', 'down', 'side', 'been', 'now', 'find', 'any', 'new', 'work', 'part', 'take', 'get', 'place', 'made', 'live', 'where', 'after', 'back', 'little', 
@@ -22,10 +35,6 @@ const textToRender = ['the', 'of', 'to', 'and', 'a', 'in', 'is', 'it', 'you', 't
                     'similar', 'guide', 'experience', 'score', 'apple', 'bought', 'led', 'pitch', 'coat', 'mass', 'card', 'band', 'rope', 'slip', 'win', 'dream', 'evening', 'condition', 'feed', 'tool', 'total', 'basic', 'smell', 'valley', 'nor', 'double', 'seat', 'arrive', 'master', 'track', 'parent', 'shore', 'division', 'sheet', 'substance', 'favor', 'connect', 'post', 'spend', 'chord', 'fat', 'glad', 'original', 'share', 'station', 'dad', 'bread', 'charge', 
                     'proper', 'bar', 'offer', 'segment', 'slave', 'duck', 'instant', 'market', 'degree', 'populate', 'chick', 'dear', 'enemy', 'reply', 'drink', 'occur', 'support', 'speech', 'nature', 'range', 'steam', 'motion', 'path', 'liquid', 'log', 'meant', 'quotient', 'teeth', 'shell', 'neck']
 
-if (!localStorage.getItem("timer")) {
-    localStorage.setItem("timer", 60);
-
-}
 
 
 const audio = new Audio('../static/writing/typing.wav')
@@ -41,44 +50,97 @@ const textDisplay = document.getElementById('text')
 const gameContainer = document.querySelector('.game-container');
 
 const cursor = document.getElementById('cursor')
-const timer = document.getElementById('timer')
 const textContainer = document.querySelector(".text-container")
 
-const timeSelector = localStorage.getItem("timer")
+const timeSelector = localStorage.getItem("time")
+const wordSelector  = localStorage.getItem("word")
+
+const word = document.getElementById("choose-word")
+const time = document.getElementById("choose-time")
+
 const chooseTime = document.getElementById('time')
+const chooseWord = document.getElementById('word')
 
+const options = document.getElementById('options')
 
-
-for (let i = 0, N = chooseTime.children.length; i < N ; i++ ) {
-    if (chooseTime.children[i].innerHTML === timeSelector) {
-        addClass( chooseTime.children[i], "current-time")
-    } else {
-        removeClassAll(chooseTime.children[i])
-    }
-}
 
 gameContainer.style.opacity = 0;
 
+if (choose == "time") {
+    for (let i = 0, N = chooseTime.children.length; i < N ; i++ ) {
+        if (chooseTime.children[i].innerHTML === timeSelector) {
+            addClass( chooseTime.children[i], "current")
+        } else {
+            removeClassAll(chooseTime.children[i])
+        }
+    }
+    removeClassAll(word)
+    addClass(time, "current")
+
+    chooseWord.style.display = "none";
+    const avaialbleChooses = ["15", "120", "60", "30"];
+    listenToChange(chooseTime, avaialbleChooses, "time");
+
+
+
+} else if (choose == "word") {
+    
+    removeClassAll(chooseTime)
+    for (let i = 0, N = chooseWord.children.length; i < N; i++ ) {
+        if (chooseWord.children[i].innerHTML === wordSelector ) {
+            addClass( chooseWord.children[i], "current") 
+        } else {
+            removeClassAll(chooseWord.children[i])
+        }
+    }
+    removeClassAll(time)
+    addClass(word, "current")
+
+    chooseTime.style.display = "none";
+    const avaialbleChooses = ["10", "25", "50", "100"];
+
+    listenToChange(chooseWord, avaialbleChooses, "word");
+}
+
+
+
+
 window.time = null;
 
-chooseTime.addEventListener("click", (event) => {
-    const getTime = event.target;
 
-    const timeAvailable = ["120", "60", "30", "15"]
-    if (getTime.dataset.timelength && timeAvailable.includes(getTime.dataset.timelength)) {
-        console.log(typeof(getTime.dataset.timelength))
-        localStorage.setItem("timer", getTime.dataset.timelength)
 
+options.addEventListener('click', (event) => {
+    const getOption  = event.target;
+    if (getOption.getAttribute('id') === "choose-word" && !getOption.className.includes('current')) {
+        localStorage.setItem("choose", "word")
         location.reload()
-        
-    } 
 
-    
+    } else if ( getOption.getAttribute("id") === "choose-time" && !getOption.className.includes('current')) {
+        localStorage.setItem("choose", "time")
+        location.reload()
+
+    }
 })
 
-restart.addEventListener("click",() => {
+
+
+function listenToChange(element, choose, value ) {
+    element.addEventListener('click', event => {
+        const getTarget = event.target;
+        alert(getTarget)
+        if (getTarget.dataset.choose && choose.includes(getTarget.dataset.choose)) {
+            localStorage.setItem(value, getTarget.dataset.choose)
+            alert(localStorage.getItem(value))
+            location.reload()
+        }
+    })
+}
+
+
+
+restart.addEventListener("click", () => {
     location.reload()
-} )
+})
 
 textDisplay.addEventListener('focusout', () => {
     cursor.style.display = 'none';
@@ -101,10 +163,7 @@ document.addEventListener('focusin', ()=> {
     
     
 })
-    // if (!document.hasFocus()) {
-    // }
-
-
+    
 
 let correctLetter = 0
 let totalLetter = 0
