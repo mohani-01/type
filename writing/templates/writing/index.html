@@ -22,9 +22,11 @@ WeType
                 <div id="timer"></div>
 
            </div>
-           
+            
             <div class="text-container">
-                <div href="" id="text" tabindex="0"></div>
+            
+                <textarea id="input-text" type="number" hidden ></textarea>
+                <div  href="" id="text" tabindex="0"  inputmode="text"></div>
                 <span class="focus" style="display: none;">
                     <i class='fas fa-mouse-pointer'></i>
                     Click here to Focus</span>
@@ -42,24 +44,25 @@ WeType
             <div id="result-detail">
                 <div class="result-top">
 
-                    <div id="result-wpm">
+                    <div class="result top" id="result-wpm">
     
                     </div>
-                    <div id="result-accuracy">
+                    <div class="result top" id="result-accuracy">
     
                     </div>
                 </div>
                 <div class="result-bottom">
-                    <div id="result-raw">
+                    <div class="result" id="result-raw">
                         
                     </div>
-                    <div id="result-character">
+                    <div class="result" id="result-character">
                         
                     </div>
-                    <div id="result-type-game">
+                    <div class="result" id="result-type-game">
                         
                     </div>
                 </div>
+                <div id="next-game">^</div>
             </div>
         </div>
 

@@ -30,6 +30,8 @@ if (!localStorage.getItem("timer")) {
 
 const audio = new Audio('../static/writing/typing.wav')
 
+document.querySelector('#result').style.display = "none";
+
 const returnToFocus = document.querySelector(".focus")
 
 
@@ -75,7 +77,6 @@ chooseTime.addEventListener("click", (event) => {
 })
 
 restart.addEventListener("click",() => {
-
     location.reload()
 } )
 
@@ -88,12 +89,20 @@ textDisplay.addEventListener('focusout', () => {
 })
 
 
+document.addEventListener('focusout', () => {
 
-    if (!document.hasFocus()) {
-        cursor.style.display = 'none';
-        textContainer.style.position = "relative";
-        returnToFocus.style.display = 'block';
-    }
+    cursor.style.display = 'none';
+    textContainer.style.position = "relative";
+    returnToFocus.style.display = 'block';
+})
+
+document.addEventListener('focusin', ()=> {
+    textDisplay.focus()
+    
+    
+})
+    // if (!document.hasFocus()) {
+    // }
 
 
 
@@ -127,19 +136,29 @@ function startTyping() {
    
     textDisplay.focus()
 
-    cursor.style.top = parentWord.getBoundingClientRect().top + 3 + 'px';
+    cursor.style.top = parentWord.getBoundingClientRect().top  + 'px';
     cursor.style.left = newLetter.getBoundingClientRect().left - 2  +   'px';
     cursor.style.display = 'block';
 
-    
 
-    textDisplay.addEventListener('focus', () => {
+    function resizeCursor() {
         if (gameStart) {
-            cursor.style.top = parentWord.getBoundingClientRect().top + 3  + 'px';
+            cursor.style.top = parentWord.getBoundingClientRect().top  + 'px';
             cursor.style.left = newLetter.getBoundingClientRect().left - 2 + 'px';
         } 
-        cursor.style.top = parentWord.getBoundingClientRect().top + 3 + 'px';
+        cursor.style.top = parentWord.getBoundingClientRect().top  + 'px';
         cursor.style.left = newLetter.getBoundingClientRect().left - 2 +   'px';
+     
+    }
+    
+    window.addEventListener('resize', () => {
+        resizeCursor();
+    })
+
+    textDisplay.addEventListener('focus', () => {
+        textDisplay.click()
+        document.querySelector('textarea').focus()
+        resizeCursor();
         cursor.style.display = 'block';
         textContainer.style.position = "static";
         returnToFocus.style.display = 'none';
@@ -180,13 +199,13 @@ function startTyping() {
         // } else gameStart = true;
         
         if (!newLetter.nextSibling && !parentWord.nextSibling) {
-            console.log("no parent no sibling")
-            console.log("newLetter", newLetter, "newLetter nextSibling", newLetter.nextSibling, "Parent", parentWord, "nextNode", parentWord.nextSibling )
+            // console.log("no parent no sibling")
+            // console.log("newLetter", newLetter, "newLetter nextSibling", newLetter.nextSibling, "Parent", parentWord, "nextNode", parentWord.nextSibling )
             alert("NO")
             endGame(textDisplay);
              return
         }
-        console.log(parentWord, parentWord.nextSibling)
+        // console.log(parentWord, parentWord.nextSibling)
         audio.pause()
         audio.currentTime = 0;
 
@@ -250,7 +269,7 @@ function startTyping() {
                 } else {
         
                     if (parentWord.previousSibling && parentWord.previousSibling.querySelector('.previous-current, .error')) {
-                        console.log("Got it")
+                        // console.log("Got it")
                         removeClass(parentWord, 'current')
                         removeClassAll(newLetter)
                         parentWord = parentWord.previousSibling
@@ -284,14 +303,14 @@ function startTyping() {
                 // check if there is a nextSibling
                 if (char === ' ') {
 
-                    console.log("char" + char + "char" , "Space", newLetter.innerHTML === char, newLetter)
+                    // console.log("char" + char + "char" , "Space", newLetter.innerHTML === char, newLetter)
                     if (!parentWord.nextSibling ) {
-                        console.log(!parentWord.nextSibling, parentWord.nextSibling, "parentWord.nextSibling")
-                        console.log(parentWord)
-                        console.log("how this is even possible")
-                        console.log("parent", parentWord.parentElement)
-                        console.log("to compare", newLetter.parentElement)
-                        alert("WY")
+                        // console.log(!parentWord.nextSibling, parentWord.nextSibling, "parentWord.nextSibling")
+                        // console.log(parentWord)
+                        // console.log("how this is even possible")
+                        // console.log("parent", parentWord.parentElement)
+                        // console.log("to compare", newLetter.parentElement)
+                        // alert("WY")
                         endGame(textDisplay);
                         return;
                     // if user click space in the first letter of a word
@@ -309,9 +328,9 @@ function startTyping() {
                             }
 
                             parentWord = parentWord.nextSibling;
-                            console.log(parentWord, "HERE")
+                            // console.log(parentWord, "HERE")
                             newLetter = parentWord.firstChild;
-                            console.log(newLetter, "HERE")
+                            // console.log(newLetter, "HERE")
                             addClass(parentWord, "current");    
                             addClass(newLetter, "current");
 
@@ -360,7 +379,7 @@ function startTyping() {
             addNewText();
         }
     
-        cursor.style.top = parentWord.getBoundingClientRect().top + 3 + 'px';
+        cursor.style.top = parentWord.getBoundingClientRect().top + 'px';
         cursor.style.left = newLetter.getBoundingClientRect().left - 2  + 'px';
         // audio.pause()
         })
@@ -396,21 +415,7 @@ async function renderText() {
     const text = await getText();
     console.log(text)
     textDisplay.innerHTML = "";
-    // const fs = require('fs')
-    // fs.readFile('words.txt', (error, data) => {
-    //     if (error) throw error;
-    //         console.log(data)
-    // })
-    // const newText = new File([""], "words.txt")
-    // console.log(newText)
-
-    // const fs = require('fs')
-    // fs.readFile('words.txt', (err, data) => {
-    //     if (err) {
-    //         console.log(err)
-    //         return
-    //     }   else console.log(data)
-    // })
+  
     renderWords(text);
         
 
@@ -459,11 +464,11 @@ function endGame(text) {
     const time = timeSelector
     const result = [wpm, raw, accuracy,  time, character]
     sendResult(result)
-    document.getElementById('result-accuracy').innerHTML = `${accuracy} % Accuracy`
-    document.getElementById('result-wpm').innerHTML =  `${ wpm } WPM`;
-    document.getElementById('result-character').innerHTML =  `Characters  <br> ${ character } `;
+    document.getElementById('result-accuracy').innerHTML = `${accuracy}% <br> Accuracy`;
+    document.getElementById('result-wpm').innerHTML =  `${ wpm }<br> WPM`;
+    document.getElementById('result-character').innerHTML =  `Characters  <br> ${ character } <br> <span class="char-message">Correct/Incorrect/Extra/Passed</span>`;
     document.getElementById('result-raw').innerHTML = `${ raw} RAW`
-    document.getElementById('result-type-game').innerHTML =  `Time: ${ time } Sec`
+    document.getElementById('result-type-game').innerHTML =  `Time: ${  time} Sec`
 
 
 
@@ -472,7 +477,9 @@ function endGame(text) {
     gameContainer.style.display = 'none';
     document.querySelector('#result').style.display = "block";
     // document.querySelector('#result-character').innerHTML = `Correct: ${ correct } Incorrect: ${ incorrect } Extra: ${ additional } Passed: ${ passed }`
-
+    document.getElementById('next-game').addEventListener('click', () => {
+        location.reload()
+    })
 }
 
 

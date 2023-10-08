@@ -17,7 +17,7 @@ body > * {
     width: 100%;
     max-width: 1300px;
     margin: auto;
-    padding: 1rem 2rem;
+    padding: .5rem 2rem;
     background: #464337;
 
 }
@@ -36,6 +36,9 @@ body > * {
     color: black !important;
     text-decoration: none !important;
     border: 2px solid rgb(194, 194, 126);
+    font-family: 'Bebas Neue', sans-serif;
+
+
 
 }
 
@@ -94,7 +97,6 @@ main {
 
 .game-container, #result {
     padding-top: calc( 100vh * .15);
-    
     width: auto;
     margin: auto;
     /* max-width: 1000px; */
@@ -239,7 +241,7 @@ button.current-time {
 
 
 #restart:hover {
-    transform: rotate(60deg);
+    transform: rotate(405deg);
     color: yellow;
 
 }
@@ -249,13 +251,46 @@ button.current-time {
 
 #result-detail {
     display: flex;
+    flex-direction: column;
     font-size: 1rem;
-    color: rgb(255, 192, 74);
+    color: rgba(255, 255, 255, 0.25);
+
 }
 
-#result-top {
+.result-top {
     display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    /* gap: 30px 30px; */
     font-size: 4rem;
+    line-height: 3rem;
+    /* width: 300px; */
+}
+
+.result-top > div {
+    margin: 20px;
+    display: inline-block;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.result-bottom {
+    display: flex;
+    justify-content: space-around;
+    font-family: 'Bebas Neue', sans-serif;
+
+}
+.top {
+    color: rgb(255, 192, 74);
+
+}
+
+.result {
+    transition: color 500ms ease;
+}
+.result:hover {
+    cursor: pointer;
+    color: rgb(255, 192, 74);
+
 }
 
 /* #next-game {
@@ -263,3 +298,34 @@ button.current-time {
     width: max-content;
     margin: auto;
 } */
+
+#result-character:hover > .char-message {
+    opacity: 1;
+}
+
+.char-message {
+    opacity: 0;
+    font-size: .7rem;
+    padding: 0;
+    font-family: 'Roboto Condensed', sans-serif;
+    transition: opacity 500ms ease-in;
+
+}
+
+#next-game {
+    font-size: 2rem;
+    transform: rotate(90deg);
+    transition: color 300ms ease-in;
+    font-weight: 800;
+}
+
+#next-game:hover {
+    color: orange;
+}
+
+#input-text {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    z-index: 9898;
+}
