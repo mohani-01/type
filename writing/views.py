@@ -53,6 +53,7 @@ def save_time(request):
             user = request.user,
             text_types = data.get("time"),
             speed = data.get("wpm"),
+            time_frame = data.get("time"),
             accuracy = data.get("accuracy"), 
             raw_speed = data.get("raw"),
             character = data.get("char")

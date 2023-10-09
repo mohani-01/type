@@ -7,12 +7,15 @@ def get_data(user):
 
     time = {}
     words = {}
+    
 
     for test in time_tests:
-        get_test = Test_Time.objects.filter(user=user, test_type__in=time_tests).order_by('-speed')
+        get_test = Test_Time.objects.filter(user=user, test_type=test).order_by('-speed')
         time[test] = get_test.first()
 
     for test in word_tests:
-        get_test = Test_Word.objects.filter(user=user, test_type__in=word_tests).order_by('-speed')
+        get_test = Test_Word.objects.filter(user=user, test_type=test).order_by('-speed')
         words[test] = get_test.first()
+
+    print(time, words)
     return time, words

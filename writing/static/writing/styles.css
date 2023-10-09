@@ -241,7 +241,7 @@ button.current {
 }
 
 #restart  {
-    margin: 2rem;
+    margin-top: 2rem;
     width: 1.2rem;
     font-size: 2rem;
     height: auto;
@@ -286,6 +286,7 @@ button.current {
 
 .result-bottom {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
     font-family: 'Bebas Neue', sans-serif;
 
