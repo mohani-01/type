@@ -20,24 +20,15 @@ def index(request):
 
 @login_required(login_url='/login')
 def account(request):
-    tests = get_data(request.user)
-   
-    # return HttpResponse("hello")
+    time, words = get_data(request.user)
 
     return render(request, "writing/profile.html", {
-        "tests": tests
+        "time": time,
+        "words": words
         
     })
 
 
-# def getText(request):
-
-#     file = open("/words.txt")
-#     read = csv.reader(file)
-#     for readd in read:
-#         print(readd)
-#     file.close()
-#     return HttpRespons~eRedirect(reverse('index'))
 
 
 
@@ -89,6 +80,7 @@ def save_word(request):
         test = Test_Word(
             user = request.user,
             test_type = data.get("type"),
+            time_frame = data.get("time"),
             speed = data.get("wpm"),
             accuracy = data.get("accuracy"), 
             raw_speed = data.get("raw"),
@@ -116,7 +108,7 @@ def login_view(request):
             return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, "writing/login.html", {
-                "message": "Invalid username and/or password."
+            "message_login": "Invalid username and/or password."
             })
     else:
         return render(request, "writing/login.html")
@@ -140,7 +132,7 @@ def register(request):
         # Ensure all fields are filled
         if not username or not email:
             return render(request, "writing/login.html", {
-                "message": "Fill all the Fields."
+                "message_register": "Fill all the Fields."
             })
        
         # Ensure password matches confirmation
@@ -148,7 +140,7 @@ def register(request):
         confirmation = request.POST["confirmation"]
         if password != confirmation:
             return render(request, "writing/login.html", {
-                "message": "Passwords must match."
+                "message_register": "Passwords must match."
             })
 
         # Attempt to create new user
@@ -157,7 +149,7 @@ def register(request):
             user.save()
         except IntegrityError:
             return render(request, "writing/login.html", {
-                "message": "Username already taken."
+                "message_register": "Username already taken."
             })
 
         login(request, user)

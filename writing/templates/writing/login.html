@@ -5,6 +5,9 @@
     <form action="{% url 'register' %}" method="post">
         {% csrf_token %}
         <div class="title">Register</div>
+        {% if message_register %}
+        <div class="error">{{ message }}</div>
+        {% endif %}
         <div class="form-input">
             <input autocomplete="off" type="text" name="username" placeholder="username">
         </div>
@@ -28,6 +31,9 @@
     <form  action="{% url 'login' %}" method="post">
         {% csrf_token %}
         <div class="title">Login</div>
+        {% if message_login %}
+        <div class="error">{{ message }}</div>
+        {% endif %}
         <div class="form-input">
             <input autocomplete="off" autofocus class="form-control" type="text" name="username" placeholder="username">
         </div>
@@ -35,7 +41,6 @@
             <input autocomplete="off" class="form-control" type="password" name="password" placeholder="Password">
         </div>
         <div class="form-button">
-    
             <input autocomplete="off" class="btn btn-primary" type="submit" value="Login">
         </div>
     </form>

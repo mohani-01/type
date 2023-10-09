@@ -84,7 +84,7 @@ if (choose == "time") {
 
 
 
-} else if (choose == "word") {
+} else if (choose == "words") {
     
     removeClassAll(chooseTime)
     for (let i = 0, N = chooseWord.children.length; i < N; i++ ) {
@@ -113,7 +113,7 @@ window.time = null;
 options.addEventListener('click', (event) => {
     const getOption  = event.target;
     if (getOption.getAttribute('id') === "choose-word" && !getOption.className.includes('current')) {
-        localStorage.setItem("choose", "word")
+        localStorage.setItem("choose", "words")
         location.reload()
 
     } else if ( getOption.getAttribute("id") === "choose-time" && !getOption.className.includes('current')) {
@@ -455,7 +455,7 @@ function getText(number=200) {
 function renderText() {
     textDisplay.innerHTML = "";
     let text;
-    if (choose == "word") {
+    if (choose == "words") {
 
         text = getText(wordSelector);
     } else {
@@ -487,11 +487,13 @@ function removeClassAll(newLetter) {
 
 function endGame(text) {
     let timeSpend;
+    let testValue;
     if (choose == 'time') {
+        testValue = timeSelector;
         timeSpend = timeSelector;
-    } else if (choose == 'word') {
+    } else if (choose == 'words') {
         timeSpend = window.timepassed;
-
+        testValue = wordSelector;
     }
 
 
@@ -521,13 +523,15 @@ function endGame(text) {
     const character = `${ correct}/${incorrect}/${additional}/${passed}`
     const raw = Math.ceil(typedWords.length / timeSpend * 60)
     const time = timeSpend
-    const result = [wpm, raw, accuracy,  time, character]
+    const result = [wpm, raw, accuracy, time, character]
     sendResult(result)
-    document.getElementById('result-accuracy').innerHTML = `${accuracy}% <br> Accuracy`;
+
     document.getElementById('result-wpm').innerHTML =  `${ wpm }<br> WPM`;
-    document.getElementById('result-character').innerHTML =  `Characters  <br> ${ character } <br> <span class="char-message">Correct/Incorrect/Extra/Passed</span>`;
+    document.getElementById('result-accuracy').innerHTML = `${accuracy}% <br> Accuracy`;
+    document.getElementById('result-type').innerHTML = `${choose} ${testValue}`
     document.getElementById('result-raw').innerHTML = `${ raw} RAW Speed`
-    document.getElementById('result-type-game').innerHTML =  `Time: ${ time} Sec`
+    document.getElementById('result-character').innerHTML =  `Characters  <br> ${ character } <br> <span class="char-message">Correct/Incorrect/Extra/Passed</span>`;
+    document.getElementById('result-time').innerHTML =  `Time: ${ time} Sec`
 
 
 
@@ -616,7 +620,7 @@ function sendResult(result) {
             }
         })
 
-    } else if (choose === "word") {
+    } else if (choose === "words") {
         //
         fetch('save/word', {
             method: "POST", 
