@@ -223,11 +223,8 @@ function startTyping() {
 
           } 
 
-        //   audio.play().then(() => {
-        //     audio.pause();
-        //     audio.currentTime = 0;
-        //     audio.play();
-        // })
+           
+
 
 
         totalLetter++;
