@@ -91,6 +91,11 @@ window.timepassed = null;
 window.time = null;
 
 
+// Initializing values
+var isPlaying = true;
+
+// On audio playing toggle values
+
 // listen to click on the option
 options.addEventListener('click', (event) => {
     const getOption  = event.target;
@@ -101,17 +106,11 @@ options.addEventListener('click', (event) => {
     } else if ( getOption.getAttribute("id") === "choose-time" && !getOption.className.includes('current')) {
         localStorage.setItem("choose", "time")
         location.reload()
-
     }
 })
 
 
 
-window.addEventListener('keydown', function(e) {
-    if(e.keyCode == 32 && e.target == document.body) {
-      e.preventDefault();
-    }
-  });
 
 
 textDisplay.addEventListener('focusout', () => {
@@ -130,10 +129,7 @@ document.addEventListener('focusout', () => {
     returnToFocus.style.display = 'block';
 })
 
-document.addEventListener('focusin', ()=> {
-    textDisplay.focus()
-    
-})
+
 
 let correctLetter = 0
 let totalLetter = 0
@@ -163,33 +159,29 @@ function startTyping() {
 
     // get the top of the parent element
     let heightTop = parentWord.getBoundingClientRect().top + + window.scrollY 
-    textDisplay.focus()
-    console.log("topm",heightTop)
-
+    // console.log("topm",heightTop)
+    
     resizeCursor()
-
-
+    
+    
     function resizeCursor() {
-        cursor.style.top = parentWord.getBoundingClientRect().top + window.scrollY + 'px';
-        cursor.style.left = newLetter.getBoundingClientRect().left - 2 + 'px'; 
-        heightTop = textDisplay.querySelector('.word:not([style*="display: none;"]').getBoundingClientRect().top 
-        console.log(heightTop)
-        parentWord = parentWord
-        console.log(textDisplay.querySelector('.word:not([style*="display: none;"]'), textDisplay.querySelector('.word:not([style*="display: none;"]').getBoundingClientRect().top)
         resizeWord(parentWord)
-
+        cursor.style.left = newLetter.getBoundingClientRect().left  + 'px'; 
+        cursor.style.top = parentWord.getBoundingClientRect().top + window.scrollY + 'px';
+        heightTop = textDisplay.querySelector('.word:not([style*="display: none;"]').getBoundingClientRect().top 
+        
     }
     
+    textDisplay.focus()
     window.addEventListener('resize', () => {
         resizeCursor();
     })
 
     textDisplay.addEventListener('focus', () => {
-        resizeCursor();
         cursor.style.display = 'block';
         textContainer.style.position = "static";
         returnToFocus.style.display = 'none';
-        VirturalKeyboard.show()
+        resizeCursor()
     })  
 
     
@@ -201,28 +193,25 @@ function startTyping() {
         if (textDisplay.className.includes('end')) {
             return;
         }
-        // key not to responed to
 
         const notKey = ["Shift", "Meta", "Enter", "Alt", "Control", "CapsLock" ]
         const keyCode = event.keyCode;
         const char = event.key
     
-        event.preventDefault()
+
         if (!((keyCode >= 48 && keyCode <= 90) || keyCode === 32 || keyCode === 8  || ( keyCode >= 188 && keyCode < 223) )) {
             return
-
         }
 
         if (notKey.includes(char)) {
             return
         }
-
         
         if (!newLetter.nextSibling && !parentWord.nextSibling && char !== 'Backspace') {
-      
-            audio.pause()
-            audio.currentTime = 0;
-            audio.play()
+
+            // audio.pause()
+            // audio.currentTime = 0;
+            // audio.play()
 
             endGame(textDisplay);
             return;
@@ -234,10 +223,12 @@ function startTyping() {
 
           } 
 
-        audio.pause()
-        audio.currentTime = 0;
+        //   audio.play().then(() => {
+        //     audio.pause();
+        //     audio.currentTime = 0;
+        //     audio.play();
+        // })
 
-        audio.play()
 
         totalLetter++;
         // if the user get the letter correctly 
@@ -280,6 +271,7 @@ function startTyping() {
             // first if it is backspace
             if (char === 'Backspace') {
 
+                removeClass(parentWord, "remove")
                 // check if there is previous sibling
                 if (newLetter.previousSibling) {
                     removeClassAll(newLetter)
@@ -295,8 +287,8 @@ function startTyping() {
                     
 
                     // check if there is previous Word an it contain an inccorect element
-                } else if ((!parentWord.previousSibling.classList.contains('noreturn')) && parentWord.previousSibling.querySelector('.previous-current, .error')) {
-                    console.log((!parentWord.previousSibling.parentElement.querySelector('.noreturn')),parentWord.previousSibling.querySelector('.noreturn') )
+                } else if (parentWord.previousSibling && (!parentWord.previousSibling.classList.contains('noreturn')) && parentWord.previousSibling.querySelector('.previous-current, .error')) {
+                    // console.log((!parentWord.previousSibling.parentElement.querySelector('.noreturn')),parentWord.previousSibling.querySelector('.noreturn') )
                     // console.log("Got it")
                     removeClass(parentWord, 'current')
                     removeClassAll(newLetter)
@@ -308,13 +300,14 @@ function startTyping() {
                     
                     addClass(newLetter, 'current')
                     removeClass(parentWord, "incorrect-word")
+                    removeClass(parentWord, "remove")
                     addClass(parentWord, 'current')
 
                     updateParent()
 
 
-                } else if ((!parentWord.previousSibling.classList.contains('noreturn')) && parentWord.previousSibling.querySelector('.incorrect'))   {
-                    console.log((!parentWord.previousSibling.querySelector('.noreturn')),parentWord.previousSibling.querySelector('.noreturn') )
+                } else if (parentWord.previousSibling && (!parentWord.previousSibling.classList.contains('noreturn')) && parentWord.previousSibling.querySelector('.incorrect'))   {
+                    // console.log((!parentWord.previousSibling.querySelector('.noreturn')),parentWord.previousSibling.querySelector('.noreturn') )
                     
                     removeClass(parentWord, 'current')
                     removeClassAll(newLetter)
@@ -331,11 +324,6 @@ function startTyping() {
                 }  else {
                     totalLetter--;
                 }
-                
-
-
-                
-            
 
             // if wrong text is typed 
             } else if (char !== newLetter.innerHTML ) {
@@ -388,24 +376,18 @@ function startTyping() {
         }
 
         timerCounter();
+        console.log("Difference > 40", parentWord.getBoundingClientRect().top + window.scrollY - heightTop )
 
-        // if the element move downwar
-        // console.log(newLetter.getBoundingClientRect().top - heightTop)
-        console.log("Difference ", parentWord.getBoundingClientRect().top + window.scrollY - heightTop )
-        console.log(parentWord.getBoundingClientRect().top, heightTop)
         if (parentWord.getBoundingClientRect().top + window.scrollY - heightTop > 39) {
             addClass(parentWord, "remove")
-            console.log(parentWord)
-            console.log("wefound him")
-            console.log("Difference > 40", parentWord.getBoundingClientRect().top + window.scrollY - heightTop )
+            // console.log(parentWord)
+            // console.log("wefound him")
             if (parentWord.getBoundingClientRect().top + window.scrollY - heightTop > 60) {
-                console.log("anoghter found")
-            console.log("Difference > 80", parentWord.getBoundingClientRect().top + window.scrollY - heightTop )
+                // console.log("anoghter found")
+            // console.log("Difference > 80", parentWord.getBoundingClientRect().top + window.scrollY - heightTop )
 
-                removeText()
-            }
-            if (choose === 'time') {
-                addNewText();
+            
+                removeText(parentWord)
             }
         }
     
@@ -416,13 +398,11 @@ function startTyping() {
 
 }
 
-function resizeWord(word) {
+ function resizeWord(word) {
     const allWords = [...textDisplay.querySelectorAll('.word:not([style*="display: none;"])')];
     const lastIndex = allWords.indexOf(word)
 
-    const words = allWords.slice(0, lastIndex-1)
-
-
+    const words = allWords.slice(0, lastIndex-1).reverse()
     
     for(let i = 0, N = words.length; i < N; i++) {
 
@@ -431,35 +411,43 @@ function resizeWord(word) {
            break
         }
     }
-    removeText()
+    console.log("Remove it", word)
+    removeText(word)
 
 
 
 }
 
-function removeText() {
+function removeText(parentWord) {
     const allWords = [...textDisplay.querySelectorAll('.word')];
     const lastWord = textDisplay.querySelector('.word.remove')
+    const currentIndex = allWords.indexOf(parentWord)
 
-    console.log(lastWord)
     const lastIndex = allWords.indexOf(lastWord);
-    console.log(lastIndex)
+    console.log("hi", lastIndex)
     if (lastIndex === -1) {
         return;
     }
+    console.log(lastIndex)
     const typedWords = allWords.slice(0, lastIndex)
     
     typedWords.forEach(element => {
+        console.log("disabling")
         addClass(element, "noreturn")
         element.style.display = 'none';
-    
+        
     });
 
-    allWords.slice(lastIndex, ).forEach(element => {
+    allWords.slice(lastIndex, currentIndex ).forEach(element => {
         removeClass(element, "remove")
     })
-
-
+    
+    if (choose == "time") {
+        if (allWords.length - currentIndex < 30 ) {
+            addNewText()
+        }
+    }
+    
 
 }
 
@@ -467,9 +455,6 @@ function removeText() {
 
 function getText(number=200) {
   
-
-
-
     let words = []
     for(let i = 0, N = textToRender.length; i < number; i++ ) {
        const index = Math.ceil((Math.random() / 4) * 1000)
@@ -481,6 +466,7 @@ function getText(number=200) {
 
 
 function renderText() {
+
     textDisplay.innerHTML = "";
     let text;
     if (choose == "words") {
@@ -488,11 +474,8 @@ function renderText() {
     } else {
         text = getText();
     }
-
-  
+    
     renderWords(text);
-        
-
     startTyping()
 }
 
@@ -526,16 +509,12 @@ function endGame(text) {
 
 
     clearInterval(window.time)
-    console.log(window.timepassed)
-
 
     const correct = text.querySelectorAll('.correct').length;
     const incorrect = text.querySelectorAll('.incorrect').length;
     const additional = text.querySelectorAll('.error').length;
     const passed = text.querySelectorAll(".passed").length;
     const allWords = [...text.querySelectorAll('.word')]
-
-
 
     const lastWord = text.querySelector('.word.current')
     const lastIndex = allWords.indexOf(lastWord);
@@ -563,7 +542,7 @@ function endGame(text) {
 
 
 
-    console.log("All element", text)    
+    // console.log("All element", text)    
     textDisplay.innerHTML = "";
     gameContainer.style.display = 'none';
     document.querySelector('#result').style.display = "block";
@@ -577,9 +556,6 @@ function endGame(text) {
 function updateParent() {
     if (choose === "words") {
         const allWords = [...textDisplay.querySelectorAll('.word')]
-    
-    
-    
         const lastWord = textDisplay.querySelector('.word.current')
         const lastIndex = allWords.indexOf(lastWord);
         timer.innerHTML = `${lastIndex} / ${wordSelector}`;
@@ -591,7 +567,6 @@ function updateParent() {
 function changetoPassed(element) {
     while (element) {
         addClass(element, "passed")
-        
         element = element.nextSibling
         
     }
@@ -600,13 +575,14 @@ function changetoPassed(element) {
 
 
 function addNewText() {
-    const text =  getText();
+    const text = getText(40);
+    console.log(text)
     renderWords(text)
 
 }
 
 function renderWords(words) {
-    console.log(words)
+    // console.log(words)
     for (let i = 0, N = words.length; i < N; i++) {
             const wordDiv = document.createElement('div');
             addClass(wordDiv, "word")
@@ -724,7 +700,7 @@ function renderTime(totaltime , passed) {
 
 }
 
-function timerCounter() {
+ function timerCounter() {
 
     if (!window.time) {
         let newTime;
@@ -743,10 +719,10 @@ function timerCounter() {
                         return; 
                     }
 
-                timer.innerHTML = renderTime(timeSelector, window.timepassed ) ;
+                timer.innerHTML = `${timeSelector - window.timepassed }`  ;
                 }
 
-        }, 500)
+        }, 1000)
 
     }
 

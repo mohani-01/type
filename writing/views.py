@@ -20,11 +20,17 @@ def index(request):
 
 @login_required(login_url='/login')
 def account(request):
+
+
+
+
     time, words = get_data(request.user)
+
+
 
     return render(request, "writing/profile.html", {
         "time": time,
-        "words": words
+        "words": words,
         
     })
 
@@ -51,7 +57,7 @@ def save_time(request):
             return JsonResponse({"error": "Incorrect test type!"}, status=406)
         test = Test_Time(
             user = request.user,
-            text_types = data.get("time"),
+            test_type = data.get("time"),
             speed = data.get("wpm"),
             time_frame = data.get("time"),
             accuracy = data.get("accuracy"), 
