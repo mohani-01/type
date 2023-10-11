@@ -1,49 +1,62 @@
 {% extends 'writing/layout.html' %}
 
+{% block title %}
+Login - Wetype
+{% endblock %}
+
+
 {% block body %}
 <div class="login">
-    <form action="{% url 'register' %}" method="post">
-        {% csrf_token %}
-        <div class="title">Register</div>
-        {% if message_register %}
-        <div class="error">{{ message }}</div>
-        {% endif %}
-        <div class="form-input">
-            <input autocomplete="off" type="text" name="username" placeholder="username">
-        </div>
-        <div class="form-input">
-            <input autocomplete="off"  class="form-control" type="email" name="email" placeholder="Email Address">
-        </div>
-        <div class="form-input">
-            <input autocomplete="off" class="form-control" type="password" name="password" placeholder="Password">
-        </div>
-        <div class="form-input">
-            <input autocomplete="off" class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
-        </div>
-        <div class="form-button">
-    
-            <input autocomplete="off" class="btn btn-primary" type="submit" value="Register">
-        </div>
-    </form>
-    
-    
+    <div class="login-width">
         
-    <form  action="{% url 'login' %}" method="post">
-        {% csrf_token %}
-        <div class="title">Login</div>
-        {% if message_login %}
-        <div class="error">{{ message }}</div>
-        {% endif %}
-        <div class="form-input">
-            <input autocomplete="off" autofocus class="form-control" type="text" name="username" placeholder="username">
-        </div>
-        <div class="form-input">
-            <input autocomplete="off" class="form-control" type="password" name="password" placeholder="Password">
-        </div>
-        <div class="form-button">
-            <input autocomplete="off" class="btn btn-primary" type="submit" value="Login">
-        </div>
-    </form>
+        <form action="{% url 'register' %}" method="post">
+            {% csrf_token %}
+            <div class="title">Register</div>
+            {% if message_register %}
+            <div class="login-error">{{ message_register }}</div>
+            {% endif %}
+
+           
+            <div class="form-group">
+                <input  autocomplete="off" class="form-control" type="text" name="username" placeholder="username">
+            </div>
+            <div class="form-group">
+                <input autocomplete="off"  class="form-control" type="email" name="email" placeholder="Email Address">
+            </div>
+            <div class="form-group">
+                <input autocomplete="off" class="form-control" type="password" name="password" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <input autocomplete="off" class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+            </div>
+            <div class="form-group">
+        
+                <input autocomplete="off" class="form-control" type="submit" value="Register">
+            </div>
+        </form>
+        
+    </div>
+    
+    <div class="login-width">
+
+        <form  action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <div class="title">Login</div>
+            {% if message_login %}
+            <div class="login-error">{{ message_login }}</div>
+            {% endif %}
+            <div class="form-input">
+                <input autocomplete="off" autofocus class="form-control" type="text" name="username" placeholder="username">
+            </div>
+            <div class="form-input">
+                <input autocomplete="off" class="form-control" type="password" name="password" placeholder="Password">
+            </div>
+            <div class="form-button">
+                <input autocomplete="off" class="form-control" type="submit" value="Login">
+            </div>
+        </form>
+    </div>
+        
 
 </div>
 

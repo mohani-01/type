@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 # Create your models here.
 class User(AbstractUser):
@@ -10,7 +11,7 @@ class Test_Time(models.Model):
     game_type = models.CharField(max_length=4,default="Time")
     test_type = models.PositiveIntegerField(null=False)
     speed = models.PositiveIntegerField(null=False)
-    accuracy = models.IntegerField(null=False)
+    accuracy = models.IntegerField(null=False, validators=[MaxValueValidator(100), MinValueValidator(1)])
     time_frame = models.IntegerField(null=False)
     time = models.DateTimeField(auto_now_add=True)
     raw_speed = models.PositiveIntegerField(null=False)
@@ -22,7 +23,7 @@ class Test_Word(models.Model):
     game_type = models.CharField(max_length=5, default="Words")
     test_type = models.PositiveIntegerField(null=False)
     speed = models.PositiveIntegerField(null=False)
-    accuracy = models.IntegerField(null=False)
+    accuracy = models.IntegerField(null=False, validators=[MaxValueValidator(100), MinValueValidator(1)])
     time_frame = models.IntegerField(null=False)
     time = models.DateTimeField(auto_now_add=True)
     raw_speed = models.PositiveIntegerField(null=False)

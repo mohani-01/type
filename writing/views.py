@@ -1,13 +1,16 @@
+from itertools import chain
 import json
+from operator import attrgetter
+import time
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, JsonResponse
 from django.db import IntegrityError
-from django.db.models import Count
+from django.db.models import Count, Sum
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import HttpResponseRedirect
 from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
-from json import dump
+
 import csv
 from .models import Test_Time, User, Test_Word
 from .helpers import *
@@ -21,16 +24,38 @@ def index(request):
 @login_required(login_url='/login')
 def account(request):
 
+    user = User.objects.get(username=request.user)
+
+    data_time =user.time.all()
+    data_word = user.word.all()
+
+    alltime = data_time.aggregate(Sum("time_frame"), Count("game_type"))
+    allwords = data_word.aggregate(Sum("time_frame"), Count("game_type"))
+
+    
+
+    tables = sorted(chain(data_time, data_word), key=attrgetter('time'))
 
 
 
-    time, words = get_data(request.user)
+ 
+
+    tt = time.gmtime(get_sum(alltime['time_frame__sum'], allwords['time_frame__sum']))
+    total_time = time.strftime("%H:%M:%S", tt)
+    total_test = get_sum(alltime['game_type__count'], allwords['game_type__count'])
+
+
+    times, words = get_data(request.user)
+
 
 
 
     return render(request, "writing/profile.html", {
-        "time": time,
+        "times": times,
         "words": words,
+        "total_test":total_test,
+        "total_time":total_time,
+        "tables": tables
         
     })
 
@@ -45,10 +70,8 @@ def save_time(request):
         print(request.user)
         data = json.loads(request.body)
 
-
         if not data.get("wpm") or not  data.get("raw") or not data.get("accuracy") or not data.get("time") or not data.get("char"):
             return JsonResponse({"error":"One or more fields are missing"}, status=400)
-
 
         test_types = [15, 30, 60, 120]
 

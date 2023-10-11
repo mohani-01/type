@@ -162,15 +162,20 @@ function startTyping() {
     // console.log("topm",heightTop)
     
     resizeCursor()
+    // cursor.style.left = parentWord.getBoundingClientRect().left +'px'; 
+
+    // cursor.style.top = parentWord.getBoundingClientRect().top + window.scrollY + 'px';
     
     
     function resizeCursor() {
-        resizeWord(parentWord)
-        cursor.style.left = newLetter.getBoundingClientRect().left  + 'px'; 
-        cursor.style.top = parentWord.getBoundingClientRect().top + window.scrollY + 'px';
+        cursor.style.left = newLetter.getBoundingClientRect().left + 'px'; 
+        cursor.style.top = parentWord.getBoundingClientRect().top + window.scrollY - 2 + 'px';
         heightTop = textDisplay.querySelector('.word:not([style*="display: none;"]').getBoundingClientRect().top 
+        resizeWord(parentWord)
         
     }
+
+
     
     textDisplay.focus()
     window.addEventListener('resize', () => {
@@ -209,9 +214,9 @@ function startTyping() {
         
         if (!newLetter.nextSibling && !parentWord.nextSibling && char !== 'Backspace') {
 
-            // audio.pause()
-            // audio.currentTime = 0;
-            // audio.play()
+            audio.pause()
+            audio.currentTime = 0;
+            audio.play()
 
             endGame(textDisplay);
             return;
@@ -220,13 +225,12 @@ function startTyping() {
 
         if (char === " " && newLetter === parentWord.firstChild)    {            
             return;
-
           } 
 
-           
 
-
-
+          audio.pause()
+          audio.currentTime = 0;
+          audio.play()
         totalLetter++;
         // if the user get the letter correctly 
         if ( char === newLetter.innerHTML ) {
@@ -716,7 +720,7 @@ function renderTime(totaltime , passed) {
                         return; 
                     }
 
-                timer.innerHTML = `${timeSelector - window.timepassed }`  ;
+                timer.innerHTML = `${renderTime(timeSelector, window.timepassed) }`  ;
                 }
 
         }, 1000)

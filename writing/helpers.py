@@ -19,3 +19,8 @@ def get_data(user):
 
     print(time, words)
     return time, words
+
+
+
+def get_sum(num_one, num_two):
+    return int(num_one or 0) + int(num_two or 0)

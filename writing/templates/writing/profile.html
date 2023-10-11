@@ -7,60 +7,144 @@ WeType - Profile
 
 {% block body %}
     <!-- <div>Totat test: {{tests.all.count }} </div> -->
-    {% for value, test in time.items %}
-    <div>
-        {% if test %}
-        <div>
-            Test Type: <span>{{value }}</span>
-        </div> 
-        <div>
-            Speed: <span>{{ test.speed }} </span>
-        </div>
-         <div>
-            Accuracy: <span>{{ test.accuracy }}  {{ value }} </span>
-        </div> 
-        <div>
-            Characters: <span> {{ test.character }} </span>
+    <div class="profile-container">
 
-        </div>
-
-        <div>
-            Time: <span> {{ test.time }} </span>
-        </div>
-        {% endif %}
-    </div>
-    {% endfor %}
-
-    {% for value, test in words.items %}
-    <div>
-
-        {% if test %}
-        <div>
-            Test Type: <span>{{value }}</span>
-        </div> 
-        <div>
-            Speed: <span>{{ test.speed }} </span>
-        </div>
-         <div>
-            Accuracy: <span>{{ test.accuracy }}  {{ value }} </span>
-        </div> 
-        <div>
-            Characters: <span> {{ test.character }} </span>
-        </div>
-        <div>
-            Time: <span> {{ test.time }} </span>
-        </div>
-        {% endif %}
-    </div>
-
+        <div class="profile-user">
     
-    {% endfor %}
-
-
-
-
-    {% for all in alltime %}
-        <div>{{ all }}</div>
+            <div class="profile-info">
     
-    {% endfor %}
+                    <svg class="user-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                    </svg>
+    
+                <div>
+    
+                    <div class="username">
+                        {{ request.user}}
+                    </div>
+                    <div class="game-small">
+                        Joined {{ request.user.date_joined|date:'d b Y' }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="total-score">
+        
+                <div>
+                    <div class="game-small">
+
+                        Total typing time: 
+                    </div>
+                    <div class="total-sum">
+
+                        {{ total_time }}
+                    </div>
+                </div>
+                <div>
+                    <div class="game-small">
+                        Total test completed: 
+                    </div>
+                    <div class="total-sum">
+
+                        {{ total_test }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    <div class="records">
+
+
+            <div class="profile">
+                {% for value, test in times.items %}
+                {% if test %}
+                <div class="tests">
+                        <div class="game-type"> <span class="game-small">{{value }} Seconds </span> </div> 
+                        <div class="game-speed"> {{ test.speed }} <span class="game-text"> speed</span> </span> </div>
+                        <div class="game-acc"> {{ test.accuracy }}<span class="game-precent">%</span> <span class="game-text">acc </span></div> 
+                        <div class="game-raw">  {{ test.raw_speed }} <span class="game-text">raw</span> </div>
+                        <div class="game-time"> <span class="game-small"> {{ test.time|date:" d M Y" }} </span></div>
+                    </div>
+                    {% else %}
+                    <div class="not-test">
+                        <div class="game-notest-type game-small"> <span class="game-"> {{value }} Seconds</span> </div> 
+                        <div class="game-notest">No Test Yet!</div>
+                    </div>
+                    {% endif %}
+        
+        
+                {% endfor %}
+        
+        
+            </div>
+
+
+
+
+            <div class="profile">
+            {% for value, test in words.items %}
+            {% if test %}
+            <div class="tests">
+                    <div class="game-type"> <span class="game-small"> {{value }} {{ test.game_type }}</span> </div> 
+                    <div class="game-speed"> {{ test.speed }} <span class="game-text"> speed</span> </span> </div>
+                    <div class="game-acc"> {{ test.accuracy }}<span class="game-precent">%</span> <span class="game-text">acc  </span></div> 
+                    <div class="game-raw">  {{ test.raw_speed }} <span class="game-text">raw</span> </div>
+                    <div class="game-time"> <span class="game-small"> {{ test.time|date:" d M Y" }} </span></div>
+                    
+                </div>
+                {% else %}
+                <div class="not-test">
+                    <div class="game-notest-type game-small"> <span class="game-"> {{value }} Words</span> </div> 
+                    <div class="game-notest">No <br> Test <br> Yet!</div>
+                </div>
+                {% endif %}
+        
+            {% endfor %}
+            </div>
+
+    </div>    
+
+    <div>
+
+
+        <div>
+            
+        </div>
+        <table class="table table-striped table-hover ">
+            <thead>
+              <tr>
+                <th scope="col" class="table-id"></th>
+                <th scope="col">wpm</th>
+                <th scope="col" class="table-raw">raw</th>
+                <th scope="col">acc</th>
+                <th scope="col" class="table-character">character</th>
+                <th scope="col">mode</th>
+                <th scope="col">Time</th>
+              </tr>
+            </thead>
+        {% for table in tables %}
+    
+            <tbody >
+              <tr>
+                <th scope="row" class="table-id">{{ forloop.counter }}</th>
+                <td >{{ table.speed }} </td>
+                <td class="table-raw">{{ table.raw_speed }} </td>
+                <td>{{ table.accuracy }}</td>
+                <td class="table-character">{{ table.character }}</td>
+                <td>{{ table.game_type}} {{ table.test_type }} </td>
+                <td>{{ table.time|date:'d M Y'}} </td>
+              </tr>
+              
+            </tbody>
+            
+            {% endfor %}
+        </table>
+    </div>
+   
+
+
+
+</div>
 {% endblock %}
