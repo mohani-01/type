@@ -79,25 +79,15 @@ gameContainer.style.opacity = 0;
 
 
 
-
-
-
-
-
-
 // organizing the game which block of div to display in the option area
-
 setupTheGame()
 
-
+// time for the game
 window.timepassed = null;
 window.time = null;
 
 
-// Initializing values
-var isPlaying = true;
 
-// On audio playing toggle values
 
 // listen to click on the option
 options.addEventListener('click', (event) => {
@@ -113,18 +103,11 @@ options.addEventListener('click', (event) => {
 })
 
 
-
-
-
 textDisplay.addEventListener('focusout', () => {
     cursor.style.display = 'none';
     textContainer.style.position = "relative";
     returnToFocus.style.display = 'block';
-
-
 })
-
-
 
 document.addEventListener('focusout', () => {
     cursor.style.display = 'none';
@@ -132,14 +115,11 @@ document.addEventListener('focusout', () => {
     returnToFocus.style.display = 'block';
 })
 
-
-
 let correctLetter = 0
 let totalLetter = 0
 
+// listen to restart of the game
 function startTyping() {
-
-    // listen to restart of the game
     restart.addEventListener("click", () => {
         location.reload()
     })
@@ -151,6 +131,8 @@ function startTyping() {
         returnToFocus.style.display = 'block';
     }
 
+
+    // make the text area visible
     gameContainer.style.opacity = 1;
 
     // get the first word and first letter
@@ -162,10 +144,8 @@ function startTyping() {
 
     // get the top of the parent element
     let heightTop = parentWord.getBoundingClientRect().top + window.scrollY 
-    // console.log("topm",heightTop)
     
     resizeCursor()
-    
     cursor.style.left = newLetter.getBoundingClientRect().left - 2 + 'px'; 
     
 
@@ -174,11 +154,8 @@ function startTyping() {
         cursor.style.left = newLetter.getBoundingClientRect().left  + 'px'; 
         cursor.style.top = parentWord.getBoundingClientRect().top + window.scrollY - 2 + 'px';
         heightTop = textDisplay.querySelector('.word:not([style*="display: none;"]').getBoundingClientRect().top 
-        resizeWord(parentWord)
-        
+        resizeWord(parentWord)   
     }
-    
-
     
     textDisplay.focus()
     window.addEventListener('resize', () => {
@@ -192,12 +169,11 @@ function startTyping() {
         resizeCursor()
     })  
 
-    
-
  
     // Logic of the game
     textDisplay.addEventListener('keyup', (event) => {
 
+        // return if the game ends
         if (textDisplay.className.includes('end')) {
             return;
         }
@@ -205,14 +181,13 @@ function startTyping() {
         const notKey = ["Shift", "Meta", "Enter", "Alt", "Control", "CapsLock" ]
         const keyCode = event.keyCode;
         const char = event.key
-    
 
         if (!((keyCode >= 48 && keyCode <= 90) || keyCode === 32 || keyCode === 8  || ( keyCode >= 188 && keyCode < 223) )) {
-            return
+            return;
         }
-
+        // additional logic to it since .keyCode is deprecated. eventhough its highly effective 
         if (notKey.includes(char)) {
-            return
+            return;
         }
         
         if (!newLetter.nextSibling && !parentWord.nextSibling && char !== 'Backspace') {
@@ -220,32 +195,33 @@ function startTyping() {
             audio.pause()
             audio.currentTime = 0;
             audio.play()
-
             endGame(textDisplay);
             return;
         }
 
-
+        // return if the user click space at the start of the game
         if (char === " " && newLetter === parentWord.firstChild)    {            
             return;
           } 
 
-
+        // play some audio
         audio.pause()
         audio.currentTime = 0;
         audio.play()
 
+        // add one to the total letters
         totalLetter++;
 
         
-
         // if the user get the letter correctly 
         if ( char === newLetter.innerHTML ) {
+            // add one to the correct letters
            correctLetter++;
 
             // remove the current className from the previous letter and word
              removeClassAll(newLetter)
             
+             // add correct to the letter
             addClass(newLetter, "correct")
 
 
@@ -257,12 +233,15 @@ function startTyping() {
                 if (parentWord.querySelector(".incorrect, .previous-current, .error")) {
                     addClass(parentWord, "incorrect-word")
                     addClass(newLetter, "previous-current")
-                    // addClass(newLetter)
-                }
 
+                }
+                // remove the current className for the word and change there word to next word
+        
                 removeClass(parentWord, "current")
                 parentWord = parentWord.nextSibling
                 newLetter = parentWord.firstChild;
+
+                // add current to the new word
                 addClass(parentWord, "current")
 
 
@@ -270,7 +249,7 @@ function startTyping() {
             } else {
                 newLetter = newLetter.nextSibling;
             }
-
+            // add current to newletter
             addClass(newLetter, "current")
         
         // incorrect
@@ -278,26 +257,30 @@ function startTyping() {
 
             // first if it is backspace
             if (char === 'Backspace') {
-
+                // remove is used in removing elements from textdisplay area when 
+                // shrink the size of the window
                 removeClass(parentWord, "remove")
-                // check if there is previous sibling
-                if (newLetter.previousSibling) {
-                    removeClassAll(newLetter)
-                    newLetter = newLetter.previousSibling
 
+                // check if there is previous sibling (previous word)
+                if (newLetter.previousSibling) {
+
+                    removeClassAll(newLetter)
+
+                    newLetter = newLetter.previousSibling
+                    // remove the error letter completely from the display
                     if (newLetter.classList.contains("error")) {
-                        let nextLetter = newLetter.nextSibling;
+                        let previousLetter = newLetter.nextSibling;
                         newLetter.remove()
-                        newLetter = nextLetter
+                        newLetter = previousLetter
                     }
+                    // remove everything from the current letter
                     removeClassAll(newLetter)
                     addClass(newLetter, "current")
                     
 
-                    // check if there is previous Word an it contain an inccorect element
+                    // check if there is previous Word an it contain an extra letter, passed letter or additional letter in it and it allowed to return back
                 } else if (parentWord.previousSibling && (!parentWord.previousSibling.classList.contains('noreturn')) && parentWord.previousSibling.querySelector('.previous-current, .error')) {
-                    // console.log((!parentWord.previousSibling.parentElement.querySelector('.noreturn')),parentWord.previousSibling.querySelector('.noreturn') )
-                    // console.log("Got it")
+
                     removeClass(parentWord, 'current')
                     removeClassAll(newLetter)
 
@@ -313,9 +296,8 @@ function startTyping() {
 
 
 
-
+                // check if the previous element contains incorrect letter in it
                 } else if (parentWord.previousSibling && (!parentWord.previousSibling.classList.contains('noreturn')) && parentWord.previousSibling.querySelector('.incorrect'))   {
-                    // console.log((!parentWord.previousSibling.querySelector('.noreturn')),parentWord.previousSibling.querySelector('.noreturn') )
                     
                     removeClass(parentWord, 'current')
                     removeClassAll(newLetter)
@@ -325,10 +307,8 @@ function startTyping() {
 
                     removeClass(parentWord, "incorrect-word")
                     addClass(parentWord, 'current')
-
-
-
-
+                
+                // do nothing so that we shouldn't increase total number to += 1 so let it stay there
                 }  else {
                     totalLetter--;
                 }
@@ -338,79 +318,81 @@ function startTyping() {
 
                 // check if there is a nextSibling
                 if (char === ' ') {
+                    // end game
                      if (!parentWord.nextSibling ) {
-                        
                         endGame(textDisplay);
                         return;
-
-                    // if user click space in the first letter of a word
 
                     } else { 
                             removeClass(parentWord, "current")
                             removeClassAll(newLetter)
-                            
+
+                            // add incorrect word to the parent and previous current to the letter and change letter(s) after the newLetter to passed letter
                             if (parentWord.querySelector(".incorrect, .error") || newLetter.nextSibling) {
                                 addClass(newLetter, "previous-current")
                                 addClass(parentWord, "incorrect-word")
                                 changetoPassed(newLetter)
                             }
 
+                            // move to the next word and letter
                             parentWord = parentWord.nextSibling;
-
                             newLetter = parentWord.firstChild;
 
                             addClass(parentWord, "current");    
                             addClass(newLetter, "current");
-
                     }
 
-
-
+                // incorrect letter
                 } else if (newLetter.nextSibling) {
+
                     removeClass(newLetter, 'current')
                     addClass(newLetter, 'incorrect')
                     newLetter = newLetter.nextSibling
                     addClass(newLetter, "current")
 
+                // additional letter which is an extra (in this case error)
                 } else {
                     const error = document.createElement('span')
-
                     addClass(error, "error")
                     error.innerHTML = char;
+                    // insert the Error
                     parentWord.insertBefore(error, newLetter)
-
                 }
             }
         }
+
+        // change the time and words 
         timerCounter();
         updateParent();
 
+
+        // add remove className if their is a difference between the topheight and new parent is about a one line
         if (parentWord.getBoundingClientRect().top + window.scrollY - heightTop > 39) {
             addClass(parentWord, "remove")
-            // console.log(parentWord)
-            // console.log("wefound him")
-            if (parentWord.getBoundingClientRect().top + window.scrollY - heightTop > 60) {
-                // console.log("anoghter found")
-            // console.log("Difference > 80", parentWord.getBoundingClientRect().top + window.scrollY - heightTop )
-
             
+            // remove first line if it get above two lines
+            if (parentWord.getBoundingClientRect().top + window.scrollY - heightTop > 60) {
                 removeText(parentWord)
             }
         }
     
+        // change the cursor location
         cursor.style.top = parentWord.getBoundingClientRect().top + window.scrollY + 'px';
         cursor.style.left = newLetter.getBoundingClientRect().left - 2  + 'px';
 
-        })
-
+    })
 }
 
- function resizeWord(word) {
+function resizeWord(word) {
+    // get the all words which are display are not none. 
     const allWords = [...textDisplay.querySelectorAll('.word:not([style*="display: none;"])')];
+    // get the index of the current word
     const lastIndex = allWords.indexOf(word)
 
-    const words = allWords.slice(0, lastIndex-1).reverse()
+    // reverse the element up until to the current word
+    const words = allWords.slice(0, lastIndex - 1).reverse()
     
+    // get the first word which is the nearest to the current letter and one line above the top
     for(let i = 0, N = words.length; i < N; i++) {
 
         if (word.getBoundingClientRect().top  - words[i].getBoundingClientRect().top > 40 && words.includes(words[i])) {
@@ -418,7 +400,7 @@ function startTyping() {
            break
         }
     }
-    console.log("Remove it", word)
+
     removeText(word)
 
 
@@ -426,42 +408,48 @@ function startTyping() {
 }
 
 function removeText(parentWord) {
+
     const allWords = [...textDisplay.querySelectorAll('.word')];
+    // get element of the word to be removed
     const lastWord = textDisplay.querySelector('.word.remove')
+
+    // get the index of the word to be removed
+    const lastIndex = allWords.indexOf(lastWord);
+
+    // get the index of the current word
     const currentIndex = allWords.indexOf(parentWord)
 
-    const lastIndex = allWords.indexOf(lastWord);
-    console.log("hi", lastIndex)
+    // if the index is not to be found return
     if (lastIndex === -1) {
         return;
     }
-    console.log(lastIndex)
+
     const typedWords = allWords.slice(0, lastIndex)
-    
+
+    // display: 'none' for every element up to the .word.remove
     typedWords.forEach(element => {
-        console.log("disabling")
         addClass(element, "noreturn")
         element.style.display = 'none';
         
     });
 
+    // remove className remove from element which are not removed in this round
     allWords.slice(lastIndex, currentIndex ).forEach(element => {
         removeClass(element, "remove")
     })
     
+
+    // add new words to the text if the game type is time and three is only about 30 words left
     if (choose === "time") {
         if (allWords.length - currentIndex < 30 ) {
             addNewText()
         }
-    }
-    
-
+    } 
 }
 
 
-
+// load random 200 words 
 function getText(number=200) {
-  
     let words = []
     for(let i = 0, N = textToRender.length; i < number; i++ ) {
        const index = Math.ceil((Math.random() / 4) * 1000)
@@ -471,10 +459,10 @@ function getText(number=200) {
    return words
 }
 
-
+// main function which start everything
 function renderText() {
-
     textDisplay.innerHTML = "";
+
     let text;
     if (choose === "words") {
         text = getText(wordSelector);
@@ -488,65 +476,74 @@ function renderText() {
 
 
 
-
+// add new class
 function addClass(element, name) {
     element.classList.add(name)
 }
 
+// remove class
 function removeClass(element, name) {
     element.classList.remove(name)
 }
 
+
+// remove all class
 function removeClassAll(newLetter) {
     newLetter.className = "";
 }
 
-
+// endGame
 function endGame(text) {
 
     let timeSpend;
     let testValue;
     if (choose === 'time') {
+
         testValue = `${choose} ${timeSelector}`;
         timeSpend = timeSelector;
+
     } else if (choose === 'words') {
         timeSpend = Math.ceil(window.timepassed);
         testValue = `${choose} ${wordSelector}`;
     }
 
-
+    // Stop the timer
     clearInterval(window.time)
-
+    // get correct incorrect extra and passed words.
     const correct = text.querySelectorAll('.correct').length;
     const incorrect = text.querySelectorAll('.incorrect').length;
     const additional = text.querySelectorAll('.error').length;
     const passed = text.querySelectorAll(".passed").length;
     const allWords = [...text.querySelectorAll('.word')]
 
+    // get the current word
     const lastWord = text.querySelector('.word.current')
+
+    // get the index of current word
     const lastIndex = allWords.indexOf(lastWord);
     const typedWords = allWords.slice(0, lastIndex)
+    // get all incorrrect words
     const incorectWords = [...text.querySelectorAll('.word.incorrect-word')];
 
-    // the same
     const accuracy  = parseInt((correctLetter / totalLetter) * 100);
-    //not the same
     const wpm = Math.floor(((typedWords.length - incorectWords.length)/ timeSpend) * 60)
-    
-    // the same
     const character = `${ correct}/${incorrect}/${additional}/${passed}`
     const raw = Math.ceil(typedWords.length / timeSpend * 60)
+
     const time = timeSpend
     const result = [wpm, raw, accuracy, time, character]
+    // check error
     const check = checkError(accuracy, wpm, raw)
+
+    // if there is an error make the test type to be the error message 
     if (check) {
         testValue = check
-    } else {
 
+    // else send the message
+    } else {
         sendResult(result)
     }
-    resultDisplay.style.display = "block";
-
+    
     document.getElementById('result-wpm').innerHTML =  `${ wpm }<br> WPM`;
     document.getElementById('result-accuracy').innerHTML = `${accuracy}% <br> Accuracy`;
     document.getElementById('result-type').innerHTML = ` ${testValue}`
@@ -556,10 +553,11 @@ function endGame(text) {
 
 
 
-    // console.log("All element", text)    
     textDisplay.innerHTML = "";
     gameContainer.style.display = 'none';
-    document.querySelector('#result').style.display = "block";
+
+    // display the result div
+    resultDisplay.style.display = "block";
 
     document.getElementById('next-game').addEventListener('click', () => {
         location.reload()
@@ -569,39 +567,42 @@ function endGame(text) {
 
 function updateParent() {
     if (choose === "words") {
+
         const allWords = [...textDisplay.querySelectorAll('.word')]
         const lastWord = textDisplay.querySelector('.word.current')
         const lastIndex = allWords.indexOf(lastWord);
         wordsDisplay.innerHTML =  `${lastIndex} / ${wordSelector}`;
+
     } else {
         wordsDisplay.style.display = 'none';
     }
 
-    }
+}
 
 
 function changetoPassed(element) {
     while (element) {
         addClass(element, "passed")
         element = element.nextSibling
-        
     }
 }
 
 
-
 function addNewText() {
     const text = getText(40);
-    console.log(text)
     renderWords(text)
 
 }
 
+
+// render the words
 function renderWords(words) {
-    // console.log(words)
+
     for (let i = 0, N = words.length; i < N; i++) {
+
             const wordDiv = document.createElement('div');
             addClass(wordDiv, "word")
+
             words[i].split('').forEach(char => {
                 const charSpan = document.createElement('span')
                 charSpan.innerHTML = char;
@@ -617,13 +618,8 @@ function renderWords(words) {
 
         textDisplay.appendChild(wordDiv)  
     }
-
-   
-
 }
 
-
-renderText()
 
 
 function sendResult(result) {
@@ -631,7 +627,6 @@ function sendResult(result) {
         return;
     }
     
-
     const csrf = getCookie("csrftoken")
     if (choose === "time") {
         // [wpm, raw, accuracy,  time, character]
@@ -687,8 +682,6 @@ function sendResult(result) {
     }
 }
 
-
-
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -705,6 +698,7 @@ function getCookie(name) {
 
     return cookieValue;
 }
+
 
 function renderTime(totaltime , passed) {
     const currentTime = totaltime - passed;
@@ -782,6 +776,7 @@ function setupTheGame() {
             if (chooseWord.children[i].innerHTML === wordSelector ) {
                 addClass( chooseWord.children[i], "current") 
             } else {
+
                 removeClassAll(chooseWord.children[i])
             }
         }
@@ -790,24 +785,28 @@ function setupTheGame() {
     
         chooseTime.style.display = "none";
         const avaialbleChooses = ["10", "25", "50", "100"];
-    
+
         listenToChange(chooseWord, avaialbleChooses, "word");
     }
     
 }
 
+
+// listen if user click on words or time or time option
 function listenToChange(element, choose, value ) {
 
     element.addEventListener('click', event => {
         const getTarget = event.target;
+
         if (getTarget.dataset.choose && choose.includes(getTarget.dataset.choose)) {
+
             localStorage.setItem(value, getTarget.dataset.choose)
             location.reload()
         }
     })
 }
 
-
+// check error
 function checkError(accuracy, wpm , raw ) {
     
     if ((accuracy > 0) && ((accuracy/100) * raw) - 10 > wpm) {
@@ -816,3 +815,5 @@ function checkError(accuracy, wpm , raw ) {
         return "Invalid Test ";
     }
 }
+
+renderText()

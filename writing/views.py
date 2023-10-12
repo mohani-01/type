@@ -72,7 +72,7 @@ def save_time(request):
         data = json.loads(request.body)
 
         if not data.get("wpm") or not  data.get("raw") or not data.get("accuracy") or not data.get("time") or not data.get("char"):
-            return JsonResponse({"error":"One or more fields are missing"}, status=400)
+            return JsonResponse({"error":"One or more field is missing"}, status=400)
 
         test_types = [15, 30, 60, 120]
 
@@ -99,11 +99,10 @@ def save_word(request):
         data = json.loads(request.body)
         
         if not data.get("wpm") or not  data.get("raw") or not data.get("accuracy") or not data.get("time") or not data.get("char") or not data.get("type"):
-            return JsonResponse({"error":"One or more fields are missing"}, status=400)
+            return JsonResponse({"error":"One or more field is missing"}, status=400)
 
 
         test_types = [10, 25, 50, 100]
-
 
         if not int(data.get('type'))  in test_types:
             return JsonResponse({"error": "Incorrect test type!"}, status=406)
