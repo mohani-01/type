@@ -17,7 +17,6 @@ def get_data(user):
         get_test = Test_Word.objects.filter(user=user, test_type=test).order_by('-speed')
         words[test] = get_test.first()
 
-    print(time, words)
     return time, words
 
 

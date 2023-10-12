@@ -31,6 +31,7 @@ WeType
 
         <div class="game-container">
             <div id="info">
+                <div id="display-words"></div>
                 <div id="timer"></div>
 
            </div>
@@ -72,7 +73,7 @@ WeType
                 {% if not user.is_authenticated %}
                 <div class="login-redirect">
 
-                    <a href="{% url 'login' %}">Login In</a> to save your progress
+                    <a href="{% url 'login' %}">Sign In</a> to save your progress
                 </div>
                 {% endif %}
                 <div id="next-game"><span class="next">Next</span> > <span class="next">Game</span> </div>

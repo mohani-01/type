@@ -48,6 +48,8 @@ const options = document.getElementById('options')
 const word = document.getElementById("choose-word")
 const time = document.getElementById("choose-time")
 
+
+
 // word and time containers
 const chooseTime = document.getElementById('time')
 const chooseWord = document.getElementById('word')
@@ -58,6 +60,7 @@ const gameContainer = document.querySelector('.game-container');
 
 // element which display time or words based on the typing mode
 const timer = document.getElementById('timer')
+const wordsDisplay = document.getElementById('display-words')
 
 // which contain the testDisplay, cursor, return to focus
 const textContainer = document.querySelector(".text-container")
@@ -69,6 +72,9 @@ const returnToFocus = document.querySelector(".focus")
 // to restart the game
 const restart = document.getElementById('restart')
 
+// result display area
+const resultDisplay = document.getElementById('result')
+resultDisplay.style.display = 'none';
 gameContainer.style.opacity = 0;
 
 
@@ -82,9 +88,6 @@ gameContainer.style.opacity = 0;
 // organizing the game which block of div to display in the option area
 
 setupTheGame()
-
-
-
 
 
 window.timepassed = null;
@@ -228,10 +231,14 @@ function startTyping() {
           } 
 
 
-          audio.pause()
-          audio.currentTime = 0;
-          audio.play()
+        audio.pause()
+        audio.currentTime = 0;
+        audio.play()
+
         totalLetter++;
+
+        
+
         // if the user get the letter correctly 
         if ( char === newLetter.innerHTML ) {
            correctLetter++;
@@ -375,8 +382,8 @@ function startTyping() {
                 }
             }
         }
-
         timerCounter();
+        updateParent();
 
         if (parentWord.getBoundingClientRect().top + window.scrollY - heightTop > 39) {
             addClass(parentWord, "remove")
@@ -393,7 +400,7 @@ function startTyping() {
     
         cursor.style.top = parentWord.getBoundingClientRect().top + window.scrollY + 'px';
         cursor.style.left = newLetter.getBoundingClientRect().left - 2  + 'px';
-        updateParent()
+
         })
 
 }
@@ -442,7 +449,7 @@ function removeText(parentWord) {
         removeClass(element, "remove")
     })
     
-    if (choose == "time") {
+    if (choose === "time") {
         if (allWords.length - currentIndex < 30 ) {
             addNewText()
         }
@@ -469,7 +476,7 @@ function renderText() {
 
     textDisplay.innerHTML = "";
     let text;
-    if (choose == "words") {
+    if (choose === "words") {
         text = getText(wordSelector);
     } else {
         text = getText();
@@ -499,12 +506,12 @@ function endGame(text) {
 
     let timeSpend;
     let testValue;
-    if (choose == 'time') {
-        testValue = timeSelector;
+    if (choose === 'time') {
+        testValue = `${choose} ${timeSelector}`;
         timeSpend = timeSelector;
-    } else if (choose == 'words') {
-        timeSpend = window.timepassed;
-        testValue = wordSelector;
+    } else if (choose === 'words') {
+        timeSpend = Math.ceil(window.timepassed);
+        testValue = `${choose} ${wordSelector}`;
     }
 
 
@@ -531,11 +538,18 @@ function endGame(text) {
     const raw = Math.ceil(typedWords.length / timeSpend * 60)
     const time = timeSpend
     const result = [wpm, raw, accuracy, time, character]
-    sendResult(result)
+    const check = checkError(accuracy, wpm, raw)
+    if (check) {
+        testValue = check
+    } else {
+
+        sendResult(result)
+    }
+    resultDisplay.style.display = "block";
 
     document.getElementById('result-wpm').innerHTML =  `${ wpm }<br> WPM`;
     document.getElementById('result-accuracy').innerHTML = `${accuracy}% <br> Accuracy`;
-    document.getElementById('result-type').innerHTML = `${choose} ${testValue}`
+    document.getElementById('result-type').innerHTML = ` ${testValue}`
     document.getElementById('result-raw').innerHTML = `${ raw} RAW Speed`
     document.getElementById('result-character').innerHTML =  `Characters  <br> ${ character } <br> <span class="char-message">Correct/Incorrect/Extra/Passed</span>`;
     document.getElementById('result-time').innerHTML =  `Time: ${ time} Sec`
@@ -558,7 +572,9 @@ function updateParent() {
         const allWords = [...textDisplay.querySelectorAll('.word')]
         const lastWord = textDisplay.querySelector('.word.current')
         const lastIndex = allWords.indexOf(lastWord);
-        timer.innerHTML = `${lastIndex} / ${wordSelector}`;
+        wordsDisplay.innerHTML =  `${lastIndex} / ${wordSelector}`;
+    } else {
+        wordsDisplay.style.display = 'none';
     }
 
     }
@@ -611,6 +627,10 @@ renderText()
 
 
 function sendResult(result) {
+    if (!document.getElementById('user-username')) {
+        return;
+    }
+    
 
     const csrf = getCookie("csrftoken")
     if (choose === "time") {
@@ -710,7 +730,7 @@ function renderTime(totaltime , passed) {
             }
 
             const currentTime = new Date(); 
-            window.timepassed = parseInt((currentTime - newTime) / 1000)
+            window.timepassed = (currentTime - newTime) / 1000
             
                 if (choose === 'time') {
                     if (timepassed >= timeSelector ) {
@@ -719,10 +739,13 @@ function renderTime(totaltime , passed) {
                         return; 
                     }
 
-                timer.innerHTML = `${renderTime(timeSelector, window.timepassed) }`  ;
+                timer.innerHTML = `${renderTime(timeSelector, parseInt(window.timepassed)) }`  ;
+                } else if (choose === 'words') {
+                timer.innerHTML = ` ${renderTime(window.timepassed, 0) }`  ;
+
                 }
 
-        }, 1000)
+        }, 500)
 
     }
 
@@ -734,7 +757,7 @@ function renderTime(totaltime , passed) {
 
 function setupTheGame() {
 
-    if (choose == "time") {
+    if (choose === "time") {
         for (let i = 0, N = chooseTime.children.length; i < N ; i++ ) {
             if (chooseTime.children[i].innerHTML === timeSelector) {
                 addClass( chooseTime.children[i], "current")
@@ -751,7 +774,7 @@ function setupTheGame() {
         listenToChange(chooseTime, avaialbleChooses, "time");
     
     
-    } else if (choose == "words") {
+    } else if (choose === "words") {
     
         removeClassAll(chooseTime)
     
@@ -782,4 +805,14 @@ function listenToChange(element, choose, value ) {
             location.reload()
         }
     })
+}
+
+
+function checkError(accuracy, wpm , raw ) {
+    
+    if ((accuracy > 0) && ((accuracy/100) * raw) - 10 > wpm) {
+        return "Accuracy Error";
+    } else if (accuracy === 0 || wpm === 0) {
+        return "Invalid Test ";
+    }
 }

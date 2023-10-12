@@ -48,7 +48,7 @@ a {
     color: none;
 }
 .wetype {
-    font-family: 'Pacifico', cursive;
+    font-family: 'Lobster', sans-serif;
     font-size: 1.3rem;
     color: black;
     transition: color 500ms ease-out;
@@ -102,6 +102,9 @@ a {
     color: var(--text-light-color)  !important;
 }
 
+
+
+
 #chooses {
     display: flex;
     justify-content: center;
@@ -115,6 +118,8 @@ a {
 
 }
 
+
+
 .choose {
     font-family: "Roboto", sans-serif;
     /* border: 1px solid white; */
@@ -122,7 +127,7 @@ a {
 }
 
 .two-option {
-    padding: 0 ;
+    padding: 0;
 }
 
 #choose-time {
@@ -139,6 +144,29 @@ a {
     background: #292b2d;
 }
 
+@media only screen and (max-width: 499px ) {
+    #chooses {
+    padding: 2px 10px 4px;
+
+    }
+    #choose-time {
+        padding: 0 10px;
+    }
+    .two-option {
+        padding: 0 !important;
+    }
+    .choose {
+        padding: 0 5px;
+    }
+    .choose-time {
+        padding: 0 5px;
+    }
+    
+    .choose > button {
+        padding: 0 .3rem;
+    }
+}
+
 .choose > button:hover {
     color: rgb(246, 246, 246) !important;
 }
@@ -149,12 +177,17 @@ main {
     height: 100%;
 }
 
+#info {
+    display: grid;
+    grid-template-columns: minmax(0, 70px) minmax(70px, 100px);
+}
 
-#timer {
+#timer, #display-words {
     height: 35px;
     text-align: justify;
     font-family: 'Bebas Neue', sans-serif;
     color: rgb(255, 202, 103);
+
 }
 
 
@@ -255,7 +288,6 @@ main {
 
 .incorrect {
     color: rgb(255, 0, 0);
-    border-color: red;
 }
 
 
@@ -299,7 +331,7 @@ button.current {
 
 #restart:hover {
     transform: rotate(405deg);
-    color: rgb(255, 192, 74);
+    color: var(--text-dark-color);
 
 }
 
@@ -333,7 +365,7 @@ button.current {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    align-items: center;
+    align-items: flex-start;
     font-family: 'Bebas Neue', sans-serif;
 
 }

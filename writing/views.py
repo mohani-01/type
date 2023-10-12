@@ -34,7 +34,8 @@ def account(request):
 
     
 
-    tables = sorted(chain(data_time, data_word), key=attrgetter('time'), reverse=True)
+    tables = sorted(chain(data_time, data_word), key=attrgetter('time'), reverse=True)[:25]
+    print(tables)
 
 
 
