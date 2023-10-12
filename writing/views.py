@@ -34,7 +34,7 @@ def account(request):
 
     
 
-    tables = sorted(chain(data_time, data_word), key=attrgetter('time'))
+    tables = sorted(chain(data_time, data_word), key=attrgetter('time'), reverse=True)
 
 
 
@@ -116,6 +116,7 @@ def save_word(request):
             raw_speed = data.get("raw"),
             character = data.get("char")
         )
+
         test.save()
 
         return JsonResponse({"success":"Test is sucessfully saved."}, status=201)

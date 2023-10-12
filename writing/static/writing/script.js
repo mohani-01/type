@@ -158,23 +158,23 @@ function startTyping() {
     addClass(newLetter,"current")
 
     // get the top of the parent element
-    let heightTop = parentWord.getBoundingClientRect().top + + window.scrollY 
+    let heightTop = parentWord.getBoundingClientRect().top + window.scrollY 
     // console.log("topm",heightTop)
     
     resizeCursor()
-    // cursor.style.left = parentWord.getBoundingClientRect().left +'px'; 
-
-    // cursor.style.top = parentWord.getBoundingClientRect().top + window.scrollY + 'px';
     
+    cursor.style.left = newLetter.getBoundingClientRect().left - 2 + 'px'; 
+    
+
     
     function resizeCursor() {
-        cursor.style.left = newLetter.getBoundingClientRect().left + 'px'; 
+        cursor.style.left = newLetter.getBoundingClientRect().left  + 'px'; 
         cursor.style.top = parentWord.getBoundingClientRect().top + window.scrollY - 2 + 'px';
         heightTop = textDisplay.querySelector('.word:not([style*="display: none;"]').getBoundingClientRect().top 
         resizeWord(parentWord)
         
     }
-
+    
 
     
     textDisplay.focus()
@@ -257,7 +257,7 @@ function startTyping() {
                 parentWord = parentWord.nextSibling
                 newLetter = parentWord.firstChild;
                 addClass(parentWord, "current")
-                updateParent()
+
 
             // pass it to the next Sibling
             } else {
@@ -304,7 +304,7 @@ function startTyping() {
                     removeClass(parentWord, "remove")
                     addClass(parentWord, 'current')
 
-                    updateParent()
+
 
 
                 } else if (parentWord.previousSibling && (!parentWord.previousSibling.classList.contains('noreturn')) && parentWord.previousSibling.querySelector('.incorrect'))   {
@@ -319,7 +319,7 @@ function startTyping() {
                     removeClass(parentWord, "incorrect-word")
                     addClass(parentWord, 'current')
 
-                    updateParent()
+
 
 
                 }  else {
@@ -357,7 +357,7 @@ function startTyping() {
 
                     }
 
-                    updateParent()
+
 
                 } else if (newLetter.nextSibling) {
                     removeClass(newLetter, 'current')
@@ -377,7 +377,6 @@ function startTyping() {
         }
 
         timerCounter();
-        console.log("Difference > 40", parentWord.getBoundingClientRect().top + window.scrollY - heightTop )
 
         if (parentWord.getBoundingClientRect().top + window.scrollY - heightTop > 39) {
             addClass(parentWord, "remove")
@@ -394,7 +393,7 @@ function startTyping() {
     
         cursor.style.top = parentWord.getBoundingClientRect().top + window.scrollY + 'px';
         cursor.style.left = newLetter.getBoundingClientRect().left - 2  + 'px';
-
+        updateParent()
         })
 
 }

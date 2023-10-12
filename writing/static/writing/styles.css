@@ -1,5 +1,10 @@
 :root {
     font-size: 27px;
+    --bg-color: #323437;
+    --text-dark-color: #909090;
+    --text-light-color: #e3e3e3;
+    --dark-color: #232427a9;
+    --text-orange: rgba(255, 166, 0, 0.90);
 }
 
 body, * {
@@ -8,7 +13,7 @@ body, * {
     margin: 0;
 }
 body {
-    background: #323437;
+    background: var(--bg-color);
 }
 
 body > * {
@@ -16,7 +21,7 @@ body > * {
     max-width: 1300px;
     margin: auto;
     padding: .5rem 2rem;
-    background: #323437 !important;
+    background: var(--bg-color) !important;
 
 }
 
@@ -29,67 +34,109 @@ body > * {
 #header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .logo > svg {
     width: 25px;
     height: 25px;
-    color: #9b9b9b;
+    color: var(--text-color);
 }
 
 a {
     text-decoration: none !important;
-    color: #0f0f0f;
+    color: none;
+}
+.wetype {
+    font-family: 'Pacifico', cursive;
+    font-size: 1.3rem;
+    color: black;
+    transition: color 500ms ease-out;
+    padding-left: 10px;
+}
+
+.logo-wetype {
+    display: flex;
+
+}
+
+.wetype:hover {
+    color: var(--text-dark-color) !important;
+}
+
+@media (max-width: 499px ) {
+    .wetype {
+        display: none;
+    }
 }
 
 .logo-wetype > svg {
-    width: 40px;
+    width: 60px;
     height: auto;
+    color: white;
+    margin-bottom: 25px;
 }
+
+
+
 
 .header-profile {
     display: block;
 }
 
-
-
-
 .logo-out > svg {
     width: 25px;
-    color: #9b9b9b;
+    color: var(--text-dark-color);
     cursor: pointer;
 }
 
+.login-username {
+    font-size: .8rem;
+}
 
+.user {
+    color: var(--text-dark-color);
+}
 
-
-
+.user:hover, .user:hover > .logo > svg {
+    color: var(--text-light-color)  !important;
+}
 
 #chooses {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid white;
-    background-color: #161616;
+    width: max-content;
+    margin: auto;
+    /* border: 2px solid wheat; */
+    background: #292b2d;
+    padding: 4px 20px 7px ;
+    border-radius: 25px;
+
 }
 
 .choose {
-    /* width: max-content;
-    margin: auto; */
-    /* padding: .3rem 2rem; */
-    border-radius: 25px;
-    background: #161616;
+    font-family: "Roboto", sans-serif;
+    /* border: 1px solid white; */
+    padding: 0 10px;
+}
+
+.two-option {
+    padding: 0 ;
+}
+
+#choose-time {
+    padding: 0 20px;
+    border-right: 2px solid var(--text-dark-color);
 }
 
 
 .choose > button {
+    padding: 0 .5rem;
     border: none;
-    font-size: .7rem;
+    font-size: .6rem;
     color:  rgba(255, 255, 255, 0.5);
-    background: rgba(0, 0, 0, 0);
-    /* padding: 0; */
-    /* margin: .1rem .3rem .2rem .3rem; */
+    background: #292b2d;
 }
 
 .choose > button:hover {
@@ -98,7 +145,7 @@ a {
 
 
 main {
-    background: #464337;
+    background: var(--bg-color);
     height: 100%;
 }
 
@@ -112,7 +159,7 @@ main {
 
 
 .game-container, #result {
-    padding-top: calc( 100vh * .15);
+    padding-top: calc( 100vh * .1);
     width: auto;
     margin: auto;
     /* max-width: 1000px; */
@@ -142,9 +189,8 @@ main {
     line-height: 40px;
     
     color: rgba(255, 255, 255, 0.385);
-
+    padding: 0 5px;
     filter: blur(5px);
-    padding: 0 10px;
     outline: none;   
     transition: filter 2s ease;
     z-index: 2;
@@ -182,9 +228,8 @@ main {
 
 @keyframes blink {
     0% { opacity: 1; }
-    40% { opacity: 0;}
-    80% { opacity: 1;}
-    100% { opacity: 0; }
+    70% { opacity: 0;}
+    100% { opacity: 1;}
 }
 
 
@@ -288,6 +333,7 @@ button.current {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    align-items: center;
     font-family: 'Bebas Neue', sans-serif;
 
 }
@@ -468,7 +514,7 @@ button.current {
     align-items: center;
     justify-content: space-around;
     padding: 20px;
-    background: #292b2d;
+    background: var(--dark-color);
     border-radius: 25px;
     margin: 10px 0;
     min-width: 300px;
@@ -499,7 +545,7 @@ button.current {
 .username {
     font-size: 2rem;
     font-family: 'Roboto', sans-serif;
-    color: rgb(202, 202, 202);
+    color: #cacaca;
 }
 
 .total-score {
@@ -518,13 +564,13 @@ button.current {
 
 .game-small {
     font-size: .6rem;
-    color: rgb(147, 147, 147);
+    color: #939393;
 }
 
 .total-sum {
     font-size: 1.5rem;
     font-family: 'Bebas Neue', sans-serif;
-    padding: 10px 0;
+    margin: 20px 0;
     text-align: center;
     line-height: 1rem;
     color: rgb(238, 238, 238);
@@ -557,7 +603,7 @@ button.current {
     justify-content: space-evenly;
     align-items: center;
     font-family: 'Roboto', sans-serif;
-    background: #292b2d;
+    background: var(--dark-color);
     border: 2px solid snow;
     /* width: max-content; */
     /* margin: auto; */
@@ -605,7 +651,7 @@ button.current {
 
 .game-notest {
     font-size: 1.2rem;
-    color: orange;
+    color: var(--text-orange);
 }
 
 
@@ -616,7 +662,7 @@ button.current {
 
 .game-speed {
     grid-area: speed;
-    color: orange;
+    color: var(--text-orange);
     font-size: 1.5rem;
     font-weight: 500;
 
@@ -624,7 +670,7 @@ button.current {
 
 .game-acc {
     grid-area: acc;
-    color: orange;
+    color: var(--text-orange);
     font-size: 1.5rem;
     font-weight: 500;
 
@@ -654,7 +700,6 @@ button.current {
                         'acc' 
                         'raw'
                         'time' ;
-    /* padding: 10px 20px; */
     gap: 5px;
 }
 
@@ -674,9 +719,7 @@ button.current {
 
 
 .table {
-    min-width: 320px;
-    /* background-color: rgb(16, 16, 16); */
-    /* color: white; */
+    min-width: 300px;
 }
 
 .table > thead {
@@ -686,12 +729,11 @@ button.current {
 
 .table > tbody {
     font-size: .7rem;
-    /* background-color: rgb(48, 48, 48) !important; */
 }
 
 .table > tbody > tr {
 
-    color: rgb(13, 0, 0) !important;
+    color: var(--text-dark-color) !important;
 }
 
 @media (max-width: 800px) {
