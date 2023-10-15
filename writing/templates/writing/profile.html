@@ -121,7 +121,7 @@ Profile - WeType
                 <th scope="col">acc</th>
                 <th scope="col" class="table-character">character</th>
                 <th scope="col">mode</th>
-                <th scope="col">Time</th>
+                <th scope="col">Date</th>
               </tr>
             </thead>
         {% for table in tables %}
@@ -131,7 +131,7 @@ Profile - WeType
                 <th scope="row" class="table-id">{{ forloop.counter }}</th>
                 <td >{{ table.speed }} </td>
                 <td class="table-raw">{{ table.raw_speed }} </td>
-                <td>{{ table.accuracy }}</td>
+                <td>{{ table.accuracy }}%</td>
                 <td class="table-character">{{ table.character }}</td>
                 <td>{{ table.game_type}} {{ table.test_type }} </td>
                 <td>{{ table.time|date:'d M Y'}} </td>

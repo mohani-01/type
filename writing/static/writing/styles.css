@@ -178,13 +178,13 @@ main {
 }
 
 #info {
-    display: grid;
-    grid-template-columns: minmax(0, 70px) minmax(70px, 100px);
+    display: flex;
 }
 
 #timer, #display-words {
     height: 35px;
     text-align: justify;
+    margin-right: 20px;
     font-family: 'Bebas Neue', sans-serif;
     color: rgb(255, 202, 103);
 
@@ -353,6 +353,15 @@ button.current {
     /* gap: 30px 30px; */
     font-size: 4rem;
     line-height: 3rem;
+}
+
+@media only screen and (max-width: 499px) {
+    .result-top {
+        font-size: 3rem;
+        line-height: 2.2rem;
+
+    }
+
 }
 
 .result-top > div {
