@@ -81,8 +81,9 @@ When you open this file you will find
       wsgi.py
    ``` 
     writing/ folder which is an django app created for this project. it includes
-        ...
-    ````/static/writing/
+      
+    ```
+    /static/writing/
                 - favion.png
                 - script.js
                 - styles.css
@@ -100,7 +101,7 @@ When you open this file you will find
         models.py
         urls.py
         views.py
-```
+      ```
         In the static/writing folder i have the `script.js` file which contains the javascript file.
 
         `typing.wav` for the sound effect.
