@@ -14,17 +14,16 @@ This project is Complex because there are many thing to consider when developing
 ### Different typing game features
 One of the thing that makes this website complex is that there are two features in typing website which have quite different apperance and implementation.
 
-    1. Time
-    This features of my website test user's Speed, Accuracy, Raw Speed, and others based on the given time interval. In this type of test it contains **15 Sec**, **30 Sec**, **60 Sec**, **120 Sec** which a user can choose from. When the user start typing a timer will be displayed to the user continuing down to zero, when the time gets to zero the game will stop automatically. 
+1. Time
+This features of my website test user's Speed, Accuracy, Raw Speed, and others based on the given time interval. In this type of test it contains **15 Sec**, **30 Sec**, **60 Sec**, **120 Sec** which a user can choose from. When the user start typing a timer will be displayed to the user continuing down to zero, when the time gets to zero the game will stop automatically. 
+In this scenario more words will be added if user start typing out all the available words. 
 
-    In this scenario more words will be added if user start typing out all the available words. 
-
-    1. Words
-    This feature also test user's Speed, Accuracy, Raw Speed and other not based on the given time interval but based on the number of words the user selected to type, which are **10 Words**, **25 Words**, **50 Words**, **100 Words**, So the game will end when the user finish typing the words that he/she selected. 
+1. Words
+This feature also test user's Speed, Accuracy, Raw Speed and other not based on the given time interval but based on the number of words the user selected to type, which are **10 Words**, **25 Words**, **50 Words**, **100 Words**, So the game will end when the user finish typing the words that he/she selected. 
     
-    In this case the instead of displaying a timer only the info area will display wordstyped/total words and a timer which countes up starting from 00:00 which is different from the first one. 
+In this case the instead of displaying a timer only the info area will display wordstyped/total words and a timer which countes up starting from 00:00 which is different from the first one. 
 
-    Words will not be add to the typing area, since this test depend on the number of words the user types in.
+Words will not be add to the typing area, since this test depend on the number of words the user types in.
 
 ### Checking correct inccorect, extra and passed words
 In both case the textplace will be change as the user type the words out.
@@ -48,7 +47,7 @@ This page provide the user with information such as:
   - amount of time spent typing
   - number of test completed 
   - top result in each types of the game. 
-  - table for the latest 30 result the user scored 
+  - table for the latest 25 result the user scored 
 
 # Result Display and Error checking
   ## Result Display
@@ -71,63 +70,64 @@ This page provide the user with information such as:
 
 # What is in each file
 When you open this file you will find
-    type folder which is create when the django project is started, which      
-   ```
-     ...
-      __init__.py
-      asgi.py
-      settings.py
-      urls.py
-      wsgi.py
-   ``` 
-    writing/ folder which is an django app created for this project. it includes
-      
-    ```
-    /static/writing/
-                - favion.png
-                - script.js
-                - styles.css
-                - typing.wav 
-        /templates/writing/
-                - index.html
-                - layout.html
-                - login.html
-                - profile.html
-
-        __init__.py
-        admin.py
-        apps.py
-        helpers.py
-        models.py
-        urls.py
-        views.py
-      ```
-        In the static/writing folder i have the `script.js` file which contains the javascript file.
-
-        `typing.wav` for the sound effect.
-        `styles.css`  style of the pages
-        and favion.png 
-        
-
-        In the templates/writing/ we have `index.html` in which we render the words to be written and result of the user
-        `layout.html` layout of the page
-        `login.html` this page works as a login and registration page
-        `profile.html` this is for profile page 
-
-
-        In `helpers.py` we have two function which i use in `views.py`  to make the `views.py` cleaner
-
-        In `models.py` we have three models, one which store user data and two which store the test score for the time and words features.
-
-        In `urls.py` we have a urls which led to views.py
-        In `views.py` we have a login, logout, register, index, account, save_time, and save_words route to make getting, saving and receiving data.
-
-
-    `manage.py`
-    `requirements.txt` - for requirements to run this page
-    `README.md` - README is the one you are reading right now, nowwwwwwwwwwww
+type folder which is create when the django project is started, which      
+```   
+__init__.py
+asgi.py
+settings.py
+urls.py
+wsgi.py
+```
+   
+writing/ folder which is an django app created for this project. it includes
     
-## how to run the application 
+```
+/static/writing/
+            - favion.png
+            - script.js
+            - styles.css
+            - typing.wav 
+    /templates/writing/
+            - index.html
+            - layout.html
+            - login.html
+            - profile.html
+
+    __init__.py
+    admin.py
+    apps.py
+    helpers.py
+    models.py
+    urls.py
+    views.py
+```
+
+In the static/writing folder i have the `script.js` file which contains the javascript file.
+
+`typing.wav` for the sound effect.
+`styles.css`  style of the pages
+and favion.png 
+    
+
+In the templates/writing/ we have `index.html` in which we render the words to be written and result of the user
+`layout.html` layout of the page
+`login.html` this page works as a login and registration page
+`profile.html` this is for profile page 
+
+
+In `helpers.py` we have two function which i use in `views.py`  to make the `views.py` cleaner
+
+In `models.py` we have three models, one which store user data and two which store the test score for the time and words features.
+
+In `urls.py` we have a urls which led to views.py
+In `views.py` we have a login, logout, register, index, account, save_time, and save_words route to make getting, saving and receiving data.
+
+
+`manage.py`
+`requirements.txt` - for requirements to run this page
+`README.md` - README is the one you are reading right now, nowwww
+
+## How to run the application 
 
 To run it on your computer you have clone this project from github and download django to your computer and open it on virtual enviroment then after activating the virtual environment make sure your directory is in the same directory of manage.py after that you can run the following command 
 
