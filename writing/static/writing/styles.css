@@ -355,13 +355,20 @@ button.current {
     line-height: 3rem;
 }
 
-@media only screen and (max-width: 499px) {
+@media only screen and (max-width: 699px) {
     .result-top {
         font-size: 3rem;
         line-height: 2.2rem;
 
     }
 
+    .result-bottom {
+        font-size: .8em;
+    }
+
+    .char-message {
+        font-size: .5rem !important;
+    }
 }
 
 .result-top > div {
@@ -384,6 +391,7 @@ button.current {
 }
 
 .result {
+    margin: 10px;
     transition: color 500ms ease;
 }
 .result:hover {

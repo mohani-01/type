@@ -626,7 +626,7 @@ function sendResult(result) {
     if (!document.getElementById('user-username')) {
         return;
     }
-    
+    console.log('sendinng result')
     const csrf = getCookie("csrftoken")
     if (choose === "time") {
         // [wpm, raw, accuracy,  time, character]

@@ -92,8 +92,8 @@ def save_time(request):
             raw_speed = data.get("raw"),
             character = data.get("char")
         )
-
-
+        test.save() 
+    
         return JsonResponse({"success":"Test is sucessfully saved."}, status=201)
  
 @login_required(login_url='/login')    
@@ -124,8 +124,7 @@ def save_word(request):
             character = data.get("char")
         )
 
-
-
+        test.save()
         return JsonResponse({"success":"Test is sucessfully saved."}, status=201)
  
     
