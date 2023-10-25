@@ -89,17 +89,12 @@ window.time = null;
 options.addEventListener('click', (event) => {
     const getOption  = event.target;
     if (getOption.getAttribute('id') === "choose-word" && !getOption.className.includes('current')) {
-        // if (!textDisplay.hasFocus()) {
         returnToFocus.style.display = 'none';
-        // }
         localStorage.setItem("choose", "words")
         location.reload()
 
     } else if ( getOption.getAttribute("id") === "choose-time" && !getOption.className.includes('current')) {
-        // if (!textDisplay.hasFocus()) {
-
         returnToFocus.style.display = 'none';
-        // }
         localStorage.setItem("choose", "time")
         location.reload()
     }
@@ -127,10 +122,7 @@ let totalLetter = 0
 // listen to restart of the game
 function startTyping() {
     restart.addEventListener("click", () => {
-        // returnToFocus.style.display = 'none';
-        // if (!textDisplay.hasFocus()) {
         returnToFocus.style.display = 'none';
-        // }
         location.reload()
     })
 
@@ -573,10 +565,7 @@ function endGame(text) {
     resultDisplay.style.display = "block";
 
     document.getElementById('next-game').addEventListener('click', () => {
-        // returnToFocus.style.display = 'none';
-        // if (!textDisplay.hasFocus()) {
         returnToFocus.style.display = 'none';
-        // }
         location.reload()
     })
 }
@@ -641,10 +630,10 @@ function sendResult(result) {
     if (!document.getElementById('user-username')) {
         return;
     }
-    console.log('sendinng result')
     const csrf = getCookie("csrftoken")
     if (choose === "time") {
-        fetch('http://127.0.0.1:7000/save/time', {
+        
+        fetch('https://wetype-type.onrender.com/save/time', {
             method : "POST",
             body : JSON.stringify({
                 "wpm": result[0],
@@ -669,7 +658,7 @@ function sendResult(result) {
 
     } else if (choose === "words") {
         //
-        fetch('http://127.0.0.1:7000/save/word ', {
+        fetch('https://wetype-type.onrender.com/save/word ', {
             method: "POST", 
             body : JSON.stringify({
                 "type": wordSelector,
@@ -813,10 +802,7 @@ function listenToChange(element, choose, value ) {
         const getTarget = event.target;
 
         if (getTarget.dataset.choose && choose.includes(getTarget.dataset.choose)) {
-            if (!textDisplay.hasFocus()) {
-
-                returnToFocus.style.display = 'none';
-            }
+            returnToFocus.style.display = 'none';
             localStorage.setItem(value, getTarget.dataset.choose)
             location.reload()
         }
