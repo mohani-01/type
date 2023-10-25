@@ -42,13 +42,12 @@ document.querySelector('#result').style.display = "none";
 const choose = localStorage.getItem("choose")
 const timeSelector = localStorage.getItem("time")
 const wordSelector  = localStorage.getItem("word")
+
 // option available
 const options = document.getElementById('options')
 // word and time
 const word = document.getElementById("choose-word")
 const time = document.getElementById("choose-time")
-
-
 
 // word and time containers
 const chooseTime = document.getElementById('time')
@@ -56,7 +55,6 @@ const chooseWord = document.getElementById('word')
 
 // div which will contain the game element and div which will contain text
 const gameContainer = document.querySelector('.game-container');
-
 
 // element which display time or words based on the typing mode
 const timer = document.getElementById('timer')
@@ -77,8 +75,6 @@ const resultDisplay = document.getElementById('result')
 resultDisplay.style.display = 'none';
 gameContainer.style.opacity = 0;
 
-
-
 // organizing the game which block of div to display in the option area
 setupTheGame()
 
@@ -93,10 +89,17 @@ window.time = null;
 options.addEventListener('click', (event) => {
     const getOption  = event.target;
     if (getOption.getAttribute('id') === "choose-word" && !getOption.className.includes('current')) {
+        // if (!textDisplay.hasFocus()) {
+        returnToFocus.style.display = 'none';
+        // }
         localStorage.setItem("choose", "words")
         location.reload()
 
     } else if ( getOption.getAttribute("id") === "choose-time" && !getOption.className.includes('current')) {
+        // if (!textDisplay.hasFocus()) {
+
+        returnToFocus.style.display = 'none';
+        // }
         localStorage.setItem("choose", "time")
         location.reload()
     }
@@ -107,12 +110,15 @@ textDisplay.addEventListener('focusout', () => {
     cursor.style.display = 'none';
     textContainer.style.position = "relative";
     returnToFocus.style.display = 'block';
+    returnToFocus.style.opacity = 1;
 })
 
 document.addEventListener('focusout', () => {
     cursor.style.display = 'none';
     textContainer.style.position = "relative";
     returnToFocus.style.display = 'block';
+    returnToFocus.style.opacity = 1;
+
 })
 
 let correctLetter = 0
@@ -121,6 +127,10 @@ let totalLetter = 0
 // listen to restart of the game
 function startTyping() {
     restart.addEventListener("click", () => {
+        // returnToFocus.style.display = 'none';
+        // if (!textDisplay.hasFocus()) {
+        returnToFocus.style.display = 'none';
+        // }
         location.reload()
     })
 
@@ -128,7 +138,9 @@ function startTyping() {
     if (!document.hasFocus()) {
         cursor.style.display = 'none';
         textContainer.style.position = "relative";
+        returnToFocus.style.opacity = 1;
         returnToFocus.style.display = 'block';
+
     }
 
 
@@ -165,6 +177,7 @@ function startTyping() {
     textDisplay.addEventListener('focus', () => {
         cursor.style.display = 'block';
         textContainer.style.position = "static";
+        returnToFocus.style.opacity = 0;
         returnToFocus.style.display = 'none';
         resizeCursor()
     })  
@@ -560,6 +573,10 @@ function endGame(text) {
     resultDisplay.style.display = "block";
 
     document.getElementById('next-game').addEventListener('click', () => {
+        // returnToFocus.style.display = 'none';
+        // if (!textDisplay.hasFocus()) {
+        returnToFocus.style.display = 'none';
+        // }
         location.reload()
     })
 }
@@ -615,11 +632,9 @@ function renderWords(words) {
             addClass(space, "space")
             wordDiv.appendChild(space)
         }
-
         textDisplay.appendChild(wordDiv)  
     }
 }
-
 
 
 function sendResult(result) {
@@ -629,7 +644,6 @@ function sendResult(result) {
     console.log('sendinng result')
     const csrf = getCookie("csrftoken")
     if (choose === "time") {
-        // [wpm, raw, accuracy,  time, character]
         fetch('save/time', {
             method : "POST",
             body : JSON.stringify({
@@ -799,7 +813,10 @@ function listenToChange(element, choose, value ) {
         const getTarget = event.target;
 
         if (getTarget.dataset.choose && choose.includes(getTarget.dataset.choose)) {
+            if (!textDisplay.hasFocus()) {
 
+                returnToFocus.style.display = 'none';
+            }
             localStorage.setItem(value, getTarget.dataset.choose)
             location.reload()
         }
