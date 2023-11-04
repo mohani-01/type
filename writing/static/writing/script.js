@@ -105,14 +105,12 @@ textDisplay.addEventListener('focusout', () => {
     cursor.style.display = 'none';
     textContainer.style.position = "relative";
     returnToFocus.style.display = 'block';
-    returnToFocus.style.opacity = 1;
 })
 
 document.addEventListener('focusout', () => {
     cursor.style.display = 'none';
     textContainer.style.position = "relative";
     returnToFocus.style.display = 'block';
-    returnToFocus.style.opacity = 1;
 
 })
 
@@ -130,7 +128,6 @@ function startTyping() {
     if (!document.hasFocus()) {
         cursor.style.display = 'none';
         textContainer.style.position = "relative";
-        returnToFocus.style.opacity = 1;
         returnToFocus.style.display = 'block';
 
     }
@@ -169,7 +166,6 @@ function startTyping() {
     textDisplay.addEventListener('focus', () => {
         cursor.style.display = 'block';
         textContainer.style.position = "static";
-        returnToFocus.style.opacity = 0;
         returnToFocus.style.display = 'none';
         resizeCursor()
     })  
