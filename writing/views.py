@@ -66,6 +66,7 @@ def account(request):
 @login_required(login_url='/login')
 def save_time(request):
 
+    # Via POST    
     if request.method == "POST":
 
         # get the data
@@ -98,6 +99,8 @@ def save_time(request):
  
 @login_required(login_url='/login')    
 def save_word(request):
+
+    # Via POST
     if request.method == "POST":
         # get the data
         data = json.loads(request.body)
@@ -159,7 +162,6 @@ def logout_view(request):
 
 
 def register(request):
-
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
@@ -182,7 +184,7 @@ def register(request):
 
         # Attempt to create new user
         try:
-            user = User.objects.create_user(username, email, password)
+            user = User.objects.create_user(username, password)
             user.save()
         except IntegrityError:
             return render(request, "writing/login.html", {

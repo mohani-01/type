@@ -80,8 +80,6 @@ a {
 }
 
 
-
-
 .header-profile {
     display: block;
 }
@@ -109,26 +107,19 @@ a {
 }
 
 
-
-
 #chooses {
     display: flex;
     justify-content: center;
     align-items: center;
     width: max-content;
     margin: auto;
-    /* border: 2px solid wheat; */
     background: #292b2d;
     padding: 4px 20px 7px ;
     border-radius: 25px;
-
 }
-
-
 
 .choose {
     font-family: "Roboto", sans-serif;
-    /* border: 1px solid white; */
     padding: 0 10px;
 }
 
@@ -140,7 +131,6 @@ a {
     padding: 0 20px;
     border-right: 2px solid var(--text-dark-color);
 }
-
 
 .choose > button {
     padding: 0 .5rem;
@@ -177,7 +167,6 @@ a {
     color: rgb(246, 246, 246) !important;
 }
 
-
 main {
     background: var(--bg-color);
     height: 100%;
@@ -193,31 +182,25 @@ main {
     margin-right: 20px;
     font-family: 'Bebas Neue', sans-serif;
     color: rgb(255, 202, 103);
-
 }
-
 
 .game-container, #result {
     padding-top: calc( 100vh * .1);
     width: auto;
     margin: auto;
-    /* max-width: 1000px; */
     min-width: 300px;
     text-align: center;
 }
 
-
 .text-container {
     height: 120px;
     overflow: hidden;
-    /* font-family: 'Oswald', sans-serif; */
     font-family: 'Roboto Condensed', sans-serif;
-    /* font-weight: 200; */
-    /* font-family: 'Roboto Mono', monospace; */
-    /* font-weight: 200; */
-
 }
 
+#keyboard-starter {
+    width: 100%;
+}
 
 #text {
     display: flex;
@@ -234,9 +217,7 @@ main {
     transition: filter 2s ease;
     z-index: 2;
     user-select: none;
-
 } 
-
 
 .focus {
     display: block;
@@ -255,16 +236,10 @@ main {
     transition: opacity 1000ms linear;
 }
 
-
-
 #text:focus {
     transition: filter 5ms ease;
     filter: blur(0px);
 }
-
-
-
-
 
 
 @keyframes blink {
@@ -273,35 +248,26 @@ main {
     100% { opacity: 1;}
 }
 
-
-
 #cursor {
     animation-name: blink;
     animation-iteration-count: infinite;
     animation-duration: 1s;
     color: rgb(255, 247, 0);
-    /* font-size: 1.2rem; */
     font-weight: 500;
     padding-bottom: 2rem;
-    /* line-height: 35px; */
     position: absolute;
-
-
 }
 
 .correct {
     color: white;
-
 }
 
 .incorrect {
     color: rgb(255, 0, 0);
 }
 
-
 .word {
   padding-right: 10px;  
-
 } 
 
 .incorrect-word {
@@ -319,11 +285,8 @@ button.current {
 
 
 #restart-button {
-    /* margin-top: 2rem; */
     display: flex;
     justify-content: center;
-   /* border: 2px solid yellow ; */
-
 }
 
 #restart  {
@@ -336,29 +299,22 @@ button.current {
     transition: transform, color, 500ms ease;
 }
 
-
 #restart:hover {
     transform: rotate(405deg);
     color: rgba(255, 166, 0, 0.900);
-
 }
-
-
-
 
 #result-detail {
     display: flex;
     flex-direction: column;
     font-size: 1rem;
     color: rgba(255, 255, 255, 0.25);
-
 }
 
 .result-top {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    /* gap: 30px 30px; */
     font-size: 4rem;
     line-height: 3rem;
 }
@@ -367,7 +323,6 @@ button.current {
     .result-top {
         font-size: 3rem;
         line-height: 2.2rem;
-
     }
 
     .result-bottom {
@@ -402,13 +357,11 @@ button.current {
     margin: 10px;
     transition: color 500ms ease;
 }
+
 .result:hover {
     cursor: pointer;
     color: rgb(255, 192, 74);
-
 }
-
-
 
 #result-character:hover > .char-message {
     opacity: 1;
@@ -420,7 +373,6 @@ button.current {
     padding: 0;
     font-family: 'Roboto', sans-serif;
     transition: opacity 500ms ease-in;
-
 }
 
 #next-game {
@@ -430,8 +382,6 @@ button.current {
     transition: color 300ms ease-in;
     font-weight: 800;
     font-family: 'Roboto', sans-serif;
-    
-
 }
 
 #next-game:hover {
@@ -459,7 +409,6 @@ button.current {
     margin: 10px;
     color: white;  
     font-size: 18px;
-
 }
 
 .login-redirect > a {
@@ -469,9 +418,6 @@ button.current {
 .login-redirect > a:hover {
     text-decoration: underline !important;
 }
-
-
-
 
 .login {
     display: flex;
@@ -511,10 +457,10 @@ button.current {
     font-family: 'Bebas Neue', sans-serif;
     border: 2px solid transparent;
 }
+
 .form-control[type='submit']:hover {
     background: #222325 !important;
 }
-
 
 .form-control:focus {
     border-color: #b7b7b7;
@@ -525,8 +471,6 @@ button.current {
     font-family: monospace;
     color: #9b9b9b;
 }
-
-
 
 .profile-container {
     font-family: 'Lato', sans-serif;
@@ -547,7 +491,6 @@ button.current {
 
 @media only screen and (max-width: 569px ) {
     .profile {
-
         display: flex;
         flex-wrap: wrap;
         padding: 20px;
@@ -557,17 +500,9 @@ button.current {
         font-family: 'Roboto', sans-serif;
         background: #292b2d;
         border: 2px solid blue;
-        /* width: max-content; */
-        /* margin: auto; */
         margin-top: 20px ;
-    
-    
     }
-    
 }
-
-
-
 
 .profile-user {
     display: flex;
@@ -580,10 +515,6 @@ button.current {
     min-width: 300px;
     border: 2px solid snow;
 }
-
-
-
-
 
 .profile-info {
     display: flex;
@@ -613,7 +544,6 @@ button.current {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    /* border: 2px solid brown ; */
     padding-right: 30px;
 }
 
@@ -634,11 +564,9 @@ button.current {
     text-align: center;
     line-height: 1rem;
     color: rgb(238, 238, 238);
-
 }
 
 @media  only screen and (min-width: 1300px) {
-    
     .records {
         display: flex;
         justify-content: space-between;
@@ -656,8 +584,7 @@ button.current {
 }
 
 .profile {
-        display: flex;
-
+    display: flex;
     padding: 20px;
     border-radius: 25px;
     justify-content: space-evenly;
@@ -665,8 +592,6 @@ button.current {
     font-family: 'Roboto', sans-serif;
     background: var(--dark-color);
     border: 2px solid snow;
-    /* width: max-content; */
-    /* margin: auto; */
     margin-top: 20px ;
     
 }
@@ -677,13 +602,9 @@ button.current {
                         'speed'
                         'acc'  ;
     gap: 10px 5px;
-
     text-align: center;
-    /* padding: 10px; */
     height: 180px;
     width: 135px;
-
-    /* border: 2px solid white; */
     transition: font-size, color 1000ms ease;
 }
 
@@ -698,7 +619,6 @@ button.current {
     font-size: .5rem;
     color: rgb(223,223,223);
     transition: color 500ms ease;
-    
 }
 
 .not-test:hover > div {
@@ -714,10 +634,8 @@ button.current {
     color: var(--text-orange);
 }
 
-
 .game-type {
     grid-area: type;
-
 }
 
 .game-speed {
@@ -725,7 +643,6 @@ button.current {
     color: var(--text-orange);
     font-size: 1.5rem;
     font-weight: 500;
-
 }
 
 .game-acc {
@@ -733,7 +650,6 @@ button.current {
     color: var(--text-orange);
     font-size: 1.5rem;
     font-weight: 500;
-
 }
 
 .game-text {
@@ -745,7 +661,6 @@ button.current {
     grid-area: raw;
     display: none;
     font-weight: 500;
-
 }
 
 .game-time {
@@ -754,7 +669,6 @@ button.current {
 }
 
 .tests:hover  {
-
     grid-template-areas: 'type'
                         'speed'
                         'acc' 
@@ -776,7 +690,6 @@ button.current {
 .tests:hover > div > span {
     display: inline-block !important;
 }
-
 
 .table {
     min-width: 300px;
