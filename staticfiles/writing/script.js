@@ -132,7 +132,7 @@ function startTyping() {
 
     }
 
-
+    returnToFocus.style.display = 'none';
     // make the text area visible
     gameContainer.style.opacity = 1;
 
