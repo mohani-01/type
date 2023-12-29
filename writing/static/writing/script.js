@@ -118,7 +118,7 @@ let totalLetter = 0
 
 // listen to restart of the game
 function startTyping() {
-    let previousKey = null;
+    
 
     restart.addEventListener("click", () => {
         returnToFocus.style.display = 'none';
@@ -183,20 +183,15 @@ function startTyping() {
         const notKey = ["Shift", "Meta", "Enter", "Alt", "Control", "CapsLock" ]
         const keyCode = event.keyCode;
         const char = event.key
+        
+        
 
-        // then ckeck if the next key is Backspace and remove everything inside a word
-        // check to remove the previous key when user clicks another key
-
-
+        // console.log(event.key)
         if (!((keyCode >= 48 && keyCode <= 90) || keyCode === 32 || keyCode === 8  || ( keyCode >= 188 && keyCode < 223) ) ) {
-            // lets check if the key is Control and save it to pervious key before returning
-
             return;
         }
         // additional logic to it since .keyCode is deprecated. eventhough its highly effective 
         if (notKey.includes(char)) {
-        // lets check if the key is Control and save it to pervious key before returning
-
             return;
         }
         
@@ -208,6 +203,9 @@ function startTyping() {
             endGame(textDisplay);
             return;
         }
+
+        // we need to remove previous key because it already pass the the top if statements
+        // previousKey = false
 
         // return if the user click space at the start of the game
         if (char === " " && newLetter === parentWord.firstChild)    {            
@@ -267,6 +265,10 @@ function startTyping() {
 
             // first if it is backspace
             if (char === 'Backspace') {
+                if (event.ctrlKey) {
+                    console.log("hi")
+                }
+                
                 // remove is used in removing elements from textdisplay area when 
                 // shrink the size of the window
                 removeClass(parentWord, "remove")
