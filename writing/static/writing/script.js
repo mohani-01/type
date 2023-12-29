@@ -680,7 +680,7 @@ function sendResult(result) {
     const csrf = getCookie("csrftoken")
     if (choose === "time") {
         
-        fetch('http://127.0.0.1:7000/save/time', {
+        fetch('https://wetype.onrender.com/save/time', {
             method : "POST",
             body : JSON.stringify({
                 "wpm": result[0],
@@ -705,7 +705,7 @@ function sendResult(result) {
 
     } else if (choose === "words") {
         //
-        fetch('http://127.0.0.1:7000/save/word ', {
+        fetch('https://wetype.onrender.com/save/word ', {
             method: "POST", 
             body : JSON.stringify({
                 "type": wordSelector,
