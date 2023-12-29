@@ -6,11 +6,10 @@ Profile - WeType
 {% endblock %}
 
 {% block body %}
-    <!-- <div>Totat test: {{tests.all.count }} </div> -->
     <div class="profile-container">
 
         <div class="profile-user">
-    
+
             <div class="profile-info">
     
                     <svg class="user-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
@@ -73,14 +72,10 @@ Profile - WeType
                     </div>
                     {% endif %}
         
-        
                 {% endfor %}
         
         
             </div>
-
-
-
 
             <div class="profile">
             {% for value, test in words.items %}
