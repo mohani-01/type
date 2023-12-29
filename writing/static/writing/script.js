@@ -273,30 +273,38 @@ function startTyping() {
                 if (event.ctrlKey) {
 
                     // check if the newletter is the first letter in the word
-                    if ((newLetter === parentWord.firstChild) && (parentWord.previousSibling) && (parentWord.previousSibling.classList.contains('incorrect-word'))) {
-                        console.log("HI")
+                    if ((newLetter === parentWord.firstChild) && (parentWord.previousSibling) && (!parentWord.previousSibling.classList.contains('noreturn')) && (parentWord.previousSibling.classList.contains('incorrect-word'))) {
+                        removeClass(parentWord, "current")
+                        removeClassAll(newLetter)
 
+                        parentWord = parentWord.previousSibling
+                        newLetter = parentWord.lastChild
+
+                        removeClass(parentWord, "incorrect-word")
+                        addClass(newLetter, 'current')
+                        addClass(parentWord, 'current')
+                    } 
+
+                    if (newLetter.previousSibling) {
+                        while (newLetter.previousSibling) {
+                            if (newLetter.classList.contains('error')) {
+                                let previousLetter = newLetter.previousSibling;
+                                newLetter.remove() 
+                                newLetter = previousLetter
+                                
+                            }  else {
+                                removeClassAll(newLetter)
+                                newLetter = newLetter.previousSibling;
+                            }  
+                        }
+                        removeClassAll(newLetter)
+
+                        addClass(newLetter, "current")
                     }
-
-                    // console.log
-                    // while (newLetter.previousSibling) {
-                    //     if (newLetter.classList.contains('error')) {
-                    //         let previousLetter = newLetter.previousSibling;
-                    //         newLetter.remove() 
-                    //         newLetter = previousLetter
-                            
-                    //     }  else {
-                    //         removeClassAll(newLetter)
-                    //         newLetter = newLetter.previousSibling;
-                    //     }
-                        
-                    // }
-                    // removeClassAll(newLetter)
-
-                    // addClass(newLetter, "current")
-                    // // newLetter = parentWord.firstChild
-
-
+                    // do nothing so that we shouldn't increase total number to += 1 so let it stay there
+                    else {
+                        totalLetter--;
+                    }
                 }
                 
                 // Normal backspace
@@ -350,6 +358,7 @@ function startTyping() {
                     
                     // do nothing so that we shouldn't increase total number to += 1 so let it stay there
                     }  else {
+                        console.log("hi")
                         totalLetter--;
                     }
                 }
