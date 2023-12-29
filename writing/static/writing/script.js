@@ -34,7 +34,7 @@ const textToRender = ['the', 'of', 'to', 'and', 'a', 'in', 'is', 'it', 'you', 't
                     'proper', 'bar', 'offer', 'segment', 'slave', 'duck', 'instant', 'market', 'degree', 'populate', 'chick', 'dear', 'enemy', 'reply', 'drink', 'occur', 'support', 'speech', 'nature', 'range', 'steam', 'motion', 'path', 'liquid', 'log', 'meant', 'quotient', 'teeth', 'shell', 'neck']
 
 
-
+console.log(textToRender)
 const audio = new Audio('../static/writing/typing.wav')
 
 document.querySelector('#result').style.display = "none";
