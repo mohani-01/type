@@ -34,7 +34,6 @@ const textToRender = ['the', 'of', 'to', 'and', 'a', 'in', 'is', 'it', 'you', 't
                     'proper', 'bar', 'offer', 'segment', 'slave', 'duck', 'instant', 'market', 'degree', 'populate', 'chick', 'dear', 'enemy', 'reply', 'drink', 'occur', 'support', 'speech', 'nature', 'range', 'steam', 'motion', 'path', 'liquid', 'log', 'meant', 'quotient', 'teeth', 'shell', 'neck']
 
 
-console.log(textToRender)
 const audio = new Audio('../static/writing/typing.wav')
 
 document.querySelector('#result').style.display = "none";
@@ -119,6 +118,8 @@ let totalLetter = 0
 
 // listen to restart of the game
 function startTyping() {
+    let previousKey = null;
+
     restart.addEventListener("click", () => {
         returnToFocus.style.display = 'none';
         location.reload()
@@ -183,11 +184,19 @@ function startTyping() {
         const keyCode = event.keyCode;
         const char = event.key
 
-        if (!((keyCode >= 48 && keyCode <= 90) || keyCode === 32 || keyCode === 8  || ( keyCode >= 188 && keyCode < 223) )) {
+        // then ckeck if the next key is Backspace and remove everything inside a word
+        // check to remove the previous key when user clicks another key
+
+
+        if (!((keyCode >= 48 && keyCode <= 90) || keyCode === 32 || keyCode === 8  || ( keyCode >= 188 && keyCode < 223) ) ) {
+            // lets check if the key is Control and save it to pervious key before returning
+
             return;
         }
         // additional logic to it since .keyCode is deprecated. eventhough its highly effective 
         if (notKey.includes(char)) {
+        // lets check if the key is Control and save it to pervious key before returning
+
             return;
         }
         
