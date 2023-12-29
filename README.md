@@ -1,5 +1,5 @@
 # Type- typing website with profile page with a Django backend
-I am inspired to build this web application by webiste called [Monkeytype](https://monkeytype.com/)
+I am inspired to build this web application by a website called [Monkeytype](https://monkeytype.com/)
 
 # Distinctiveness 
 This project is distinct from any of other projects I build for this course (Search, Wiki, Commerce, Email and Network). Because it it is a typing website, nothing in the above project has a relation with typing website. It highly utlitize Javascript to control the text and cursor change as the user type and also resize their window.
