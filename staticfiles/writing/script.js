@@ -34,7 +34,6 @@ const textToRender = ['the', 'of', 'to', 'and', 'a', 'in', 'is', 'it', 'you', 't
                     'proper', 'bar', 'offer', 'segment', 'slave', 'duck', 'instant', 'market', 'degree', 'populate', 'chick', 'dear', 'enemy', 'reply', 'drink', 'occur', 'support', 'speech', 'nature', 'range', 'steam', 'motion', 'path', 'liquid', 'log', 'meant', 'quotient', 'teeth', 'shell', 'neck']
 
 
-
 const audio = new Audio('../static/writing/typing.wav')
 
 document.querySelector('#result').style.display = "none";
@@ -119,6 +118,8 @@ let totalLetter = 0
 
 // listen to restart of the game
 function startTyping() {
+    
+
     restart.addEventListener("click", () => {
         returnToFocus.style.display = 'none';
         location.reload()
@@ -140,7 +141,7 @@ function startTyping() {
     let parentWord = textDisplay.firstChild
     let newLetter = parentWord.firstChild
     
-    addClass(parentWord, 'current')
+    addClass(parentWord, "current")
     addClass(newLetter,"current")
 
     // get the top of the parent element
@@ -182,8 +183,11 @@ function startTyping() {
         const notKey = ["Shift", "Meta", "Enter", "Alt", "Control", "CapsLock" ]
         const keyCode = event.keyCode;
         const char = event.key
+        
+        
 
-        if (!((keyCode >= 48 && keyCode <= 90) || keyCode === 32 || keyCode === 8  || ( keyCode >= 188 && keyCode < 223) )) {
+        // console.log(event.key)
+        if (!((keyCode >= 48 && keyCode <= 90) || keyCode === 32 || keyCode === 8  || ( keyCode >= 188 && keyCode < 223) ) ) {
             return;
         }
         // additional logic to it since .keyCode is deprecated. eventhough its highly effective 
@@ -200,6 +204,7 @@ function startTyping() {
             return;
         }
 
+    
         // return if the user click space at the start of the game
         if (char === " " && newLetter === parentWord.firstChild)    {            
             return;
@@ -258,61 +263,107 @@ function startTyping() {
 
             // first if it is backspace
             if (char === 'Backspace') {
-                // remove is used in removing elements from textdisplay area when 
-                // shrink the size of the window
+
+                // remove is used in removing elements from textdisplay area  
+                // when shrink the size of the window
                 removeClass(parentWord, "remove")
 
-                // check if there is previous sibling (previous word)
-                if (newLetter.previousSibling) {
 
-                    removeClassAll(newLetter)
+                 // check if user clicked Ctrl on their keyboard when clicking Backspace
+                if (event.ctrlKey) {
 
-                    newLetter = newLetter.previousSibling
-                    // remove the error letter completely from the display
-                    if (newLetter.classList.contains("error")) {
-                        let previousLetter = newLetter.nextSibling;
-                        newLetter.remove()
-                        newLetter = previousLetter
+                    // check if the newletter is the first letter in the word
+                    if ((newLetter === parentWord.firstChild) && (parentWord.previousSibling) && (!parentWord.previousSibling.classList.contains('noreturn')) && (parentWord.previousSibling.classList.contains('incorrect-word'))) {
+                        removeClass(parentWord, "current")
+                        removeClassAll(newLetter)
+
+                        parentWord = parentWord.previousSibling
+                        newLetter = parentWord.lastChild
+
+                        removeClass(parentWord, "incorrect-word")
+                        addClass(newLetter, 'current')
+                        addClass(parentWord, 'current')
+                    } 
+
+                    if (newLetter.previousSibling) {
+                        while (newLetter.previousSibling) {
+                            if (newLetter.classList.contains('error')) {
+                                let previousLetter = newLetter.previousSibling;
+                                newLetter.remove() 
+                                newLetter = previousLetter
+                                
+                            }  else {
+                                removeClassAll(newLetter)
+                                newLetter = newLetter.previousSibling;
+                            }  
+                        }
+                        removeClassAll(newLetter)
+
+                        addClass(newLetter, "current")
                     }
-                    // remove everything from the current letter
-                    removeClassAll(newLetter)
-                    addClass(newLetter, "current")
-                    
+                    // do nothing so that we shouldn't increase total number to += 1 so let it stay there
+                    else {
+                        totalLetter--;
+                    }
+                }
+                
+                // Normal backspace
+                else {
+                    // check if there is previous sibling (previous word)
+                    if (newLetter.previousSibling) {
+
+                            newLetter = newLetter.previousSibling
+        
+                            // remove the error letter completely from the display
+                            if (newLetter.classList.contains("error")) {
+                                let previousLetter = newLetter.nextSibling;
+                                newLetter.remove()
+                                newLetter = previousLetter
+                            }
+                            // remove everything from the current letter
+                            removeClassAll(newLetter)
+                            addClass(newLetter, "current")
+
+                        
 
                     // check if there is previous Word an it contain an extra letter, passed letter or additional letter in it and it allowed to return back
-                } else if (parentWord.previousSibling && (!parentWord.previousSibling.classList.contains('noreturn')) && parentWord.previousSibling.querySelector('.previous-current, .error')) {
+                    } else if (parentWord.previousSibling && (!parentWord.previousSibling.classList.contains('noreturn')) && parentWord.previousSibling.querySelector('.previous-current, .error')) {
 
-                    removeClass(parentWord, 'current')
-                    removeClassAll(newLetter)
+                        removeClass(parentWord, "current")
+                        removeClassAll(newLetter)
 
-                    parentWord = parentWord.previousSibling
-                    newLetter = parentWord.querySelector('.previous-current')
+                        parentWord = parentWord.previousSibling
+                        newLetter = parentWord.querySelector('.previous-current')
 
-                    removeClassAll(newLetter)
+                        removeClassAll(newLetter)
+                        
+                        addClass(newLetter, 'current')
+                        removeClass(parentWord, "incorrect-word")
+                        removeClass(parentWord, "remove")
+                        addClass(parentWord, 'current')
+
+
+
+                    // check if the previous element contains incorrect letter in it
+                    } else if (parentWord.previousSibling && (!parentWord.previousSibling.classList.contains('noreturn')) && parentWord.previousSibling.querySelector('.incorrect'))   {
+                        
+                        removeClass(parentWord, 'current')
+                        removeClassAll(newLetter)
+
+                        parentWord = parentWord.previousSibling
+                        newLetter = parentWord.lastChild
+
+                        removeClass(parentWord, "incorrect-word")
+                        addClass(parentWord, 'current')
                     
-                    addClass(newLetter, 'current')
-                    removeClass(parentWord, "incorrect-word")
-                    removeClass(parentWord, "remove")
-                    addClass(parentWord, 'current')
-
-
-
-                // check if the previous element contains incorrect letter in it
-                } else if (parentWord.previousSibling && (!parentWord.previousSibling.classList.contains('noreturn')) && parentWord.previousSibling.querySelector('.incorrect'))   {
-                    
-                    removeClass(parentWord, 'current')
-                    removeClassAll(newLetter)
-
-                    parentWord = parentWord.previousSibling
-                    newLetter = parentWord.lastChild
-
-                    removeClass(parentWord, "incorrect-word")
-                    addClass(parentWord, 'current')
-                
-                // do nothing so that we shouldn't increase total number to += 1 so let it stay there
-                }  else {
-                    totalLetter--;
+                    // do nothing so that we shouldn't increase total number to += 1 so let it stay there
+                    }  else {
+                        console.log("hi")
+                        totalLetter--;
+                    }
                 }
+                
+                
 
             // if wrong text is typed 
             } else if (char !== newLetter.innerHTML ) {
