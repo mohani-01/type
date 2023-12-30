@@ -1,3 +1,6 @@
+from django.shortcuts import render
+
+# Create your views here.
 from itertools import chain
 import json
 from operator import attrgetter
