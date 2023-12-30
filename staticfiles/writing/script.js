@@ -286,21 +286,21 @@ function startTyping() {
                     } 
 
                     if (newLetter.previousSibling) {
-                    //     while (newLetter.previousSibling) {
-                    //         if (newLetter.classList.contains('error')) {
-                    //             let previousLetter = newLetter.previousSibling;
-                    //             newLetter.remove() 
-                    //             newLetter = previousLetter
+                        while (newLetter.previousSibling) {
+                            if (newLetter.classList.contains('error')) {
+                                let previousLetter = newLetter.previousSibling;
+                                newLetter.remove() 
+                                newLetter = previousLetter
                                 
-                    //         }  else {
-                    //             removeClassAll(newLetter)
-                    //             newLetter = newLetter.previousSibling;
-                    //         }  
-                    //     }
-                    //     removeClassAll(newLetter)
+                            }  else {
+                                removeClassAll(newLetter)
+                                newLetter = newLetter.previousSibling;
+                            }  
+                        }
+                        removeClassAll(newLetter)
 
-                    //     addClass(newLetter, "current")
-                    // }
+                        addClass(newLetter, "current")
+                    }
                     // do nothing so that we shouldn't increase total number to += 1 so let it stay there
                     else {
                         totalLetter--;
