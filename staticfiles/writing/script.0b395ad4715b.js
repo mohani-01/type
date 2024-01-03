@@ -358,6 +358,7 @@ function startTyping() {
                     
                     // do nothing so that we shouldn't increase total number to += 1 so let it stay there
                     }  else {
+                        console.log("hi")
                         totalLetter--;
                     }
                 }
